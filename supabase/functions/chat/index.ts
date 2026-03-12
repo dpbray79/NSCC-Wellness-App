@@ -14,15 +14,13 @@ serve(async (req) => {
     try {
         const { messages, wellnessData } = await req.json()
 
-        const apiKey = Deno.env.get('OPENAI_API_KEY')
+        const apiKey = Deno.env.get('GEMINI_API_KEY')
         if (!apiKey) {
-            throw new Error('OPENAI_API_KEY is not set')
+            throw new Error('GEMINI_API_KEY is not set')
         }
 
-        // System prompt instructing the AI on its persona and constraints
-        const systemPrompt = {
-            role: 'system',
-            content: `You are a supportive, empathetic Wellness Companion for Nova Scotia Community College (NSCC) students.
+        // System instructions (Gemini handles system prompts separately from the chat history)
+        const systemInstruction = `You are a supportive, empathetic Wellness Companion for Nova Scotia Community College (NSCC) students.
 Your goal is to provide a safe, non-judgmental space for students to reflect on their day.
 You MUST NOT diagnose, prescribe, or provide medical advice.
 
@@ -34,31 +32,41 @@ The student's current wellness check-in data (out of 10) is:
 - Food Security: ${wellnessData?.food_security || 'Unknown'}
 
 Use this context to be empathetic, but don't explicitly list their scores back to them unless relevant.
-If the student expresses thoughts of self-harm, severe distress, or crisis, you MUST include the exact string "CRISIS_ESCALATE" in your response so the client app can trigger emergency UI.`
-        }
+If the student expresses thoughts of self-harm, severe distress, or crisis, you MUST include the exact string "CRISIS_ESCALATE" in your response so the client app can trigger emergency UI.`;
 
-        const openAiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        // Map the existing chat history format into Gemini's expected format
+        // Gemini expects: { role: 'user' | 'model', parts: [{ text: '...' }] }
+        const geminiHistory = messages.map((msg: any) => ({
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: msg.content }]
+        }));
+
+        // Call Google Gemini API
+        const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [systemPrompt, ...messages],
-                temperature: 0.7,
-                max_tokens: 300
+                system_instruction: {
+                    parts: { text: systemInstruction }
+                },
+                contents: geminiHistory,
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 300,
+                }
             }),
         })
 
-        const data = await openAiResponse.json()
+        const data = await geminiResponse.json()
 
-        if (!openAiResponse.ok) {
-            console.error("OpenAI API Error:", data);
-            throw new Error(data.error?.message || 'Failed to fetch from OpenAI');
+        if (!geminiResponse.ok) {
+            console.error("Gemini API Error:", data);
+            throw new Error(data.error?.message || 'Failed to fetch from Gemini');
         }
 
-        const replyContent = data.choices[0].message.content
+        const replyContent = data.candidates[0].content.parts[0].text;
 
         return new Response(JSON.stringify({ reply: replyContent }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -66,14 +66,16 @@ export default function Chat() {
             if (error) throw error;
             if (data.error) throw new Error(data.error);
 
+            const reply = data.reply || "";
+
             // Look for the safety crisis trigger keyword
-            if (data.reply?.includes("CRISIS_ESCALATE")) {
+            if (reply.includes("CRISIS_ESCALATE")) {
                 setMessages(prev => [...prev, {
                     role: 'assistant',
                     content: "It sounds like you are going through an incredibly difficult time right now, and I want to make sure you have the right support. Please consider calling the NS Mental Health Crisis Line at 1-888-429-8167 or visiting the Support tab in this app for immediate, confidential human help."
                 }]);
             } else {
-                setMessages(prev => [...prev, { role: 'assistant', content: data.reply || "I'm not sure how to respond to that." }]);
+                setMessages(prev => [...prev, { role: 'assistant', content: reply || "I'm listening. Tell me more." }]);
             }
 
         } catch (error) {

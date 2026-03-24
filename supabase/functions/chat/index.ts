@@ -55,12 +55,12 @@ If the student expresses thoughts of self-harm, severe distress, or crisis, you 
         const data = await geminiResponse.json()
 
         if (!geminiResponse.ok) {
-            console.error("Google Gemini API Rejection:", data);
-            throw new Error(data.error?.message || 'Gemini API Error');
+            console.error(`Google Gemini API Error (${geminiResponse.status}):`, JSON.stringify(data, null, 2));
+            throw new Error(data.error?.message || `Gemini API Error: ${geminiResponse.status}`);
         }
 
         const replyContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm listening. Tell me more.";
-        console.log("Gemini responded successfully.");
+        console.log("Gemini responded successfully. Length:", replyContent.length);
 
         return new Response(JSON.stringify({ reply: replyContent }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -49,7 +49,8 @@ export default function Home() {
         <>
             {/* Greeting */}
             <div className="greet-card">
-                <h2>Good morning, William.</h2>
+                <h2>Good morning, William (Test Mode).</h2>
+
                 <p>How are you showing up today?</p>
                 <div className="greet-score">
                     <span className="num">{metrics.composite.toFixed(1)}</span>

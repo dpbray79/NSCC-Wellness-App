@@ -10,6 +10,16 @@
 
 .logo-text {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wellness-header-logo {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+    margin-right: 2px;
 }
 
 .logo-text h1 {

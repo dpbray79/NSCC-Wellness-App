@@ -11,7 +11,7 @@ export default function Resources() {
 
     useEffect(() => {
         const fetchData = async () => {
-            // 1. Get latest check-in
+            // 1. Get latest Journal Check-In
             const { data: checkin } = await supabase
                 .from('checkins')
                 .select('*')
@@ -84,7 +84,7 @@ export default function Resources() {
                         <h3 style={{ color: 'var(--sage)' }}>Self-Care Insight</h3>
                     </div>
                     <p style={{ fontStyle: 'italic', fontSize: '14px', color: 'var(--bark)', marginBottom: 0 }}>
-                        {loadingInsight ? "Reflecting on your latest metrics..." : (insight || "Your well-being matters. Consider exploring these resources today.")}
+                        {loadingInsight ? "Analyzing your latest Journal Check-In..." : (insight || "Your well-being matters. Consider exploring these resources today.")}
                     </p>
                 </div>
             )}

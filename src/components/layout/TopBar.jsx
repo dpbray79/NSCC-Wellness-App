@@ -42,7 +42,7 @@ export default function TopBar() {
                     <HomeIcon /><span>Today</span>
                 </NavLink>
                 <NavLink to="/checkin" className={({ isActive }) => `nav-tab ${isActive ? "active" : ""}`}>
-                    <CheckIcon /><span>Check In</span>
+                    <CheckIcon /><span>Journal Check-In</span>
                 </NavLink>
                 <NavLink to="/chat" className={({ isActive }) => `nav-tab ${isActive ? "active" : ""}`}>
                     <ChatIcon /><span>Chat</span>

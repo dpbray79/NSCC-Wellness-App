@@ -176,10 +176,10 @@ export default function Home() {
                 <section className="grid-item priority-action">
                     <div className="item-inner">
                         <div className="card-label-mini">Action Required</div>
-                        <h3>Daily Reflection</h3>
+                        <h3>Journal Check-In</h3>
                         <p>Contribute to your wellness baseline with a 2-minute centering exercise.</p>
                         <button className="btn btn-primary btn-sm btn-full" onClick={() => navigate('/checkin')}>
-                            Start Reflection &nbsp; →
+                            Start Check-In &nbsp; →
                         </button>
                     </div>
                 </section>

@@ -23,7 +23,7 @@ export default function Chat() {
     }, [messages, isTyping]);
 
     useEffect(() => {
-        // Fetch their most recent check-in so the AI understands their current context
+        // Fetch their most recent Journal Check-In so the AI understands their current context
         const fetchLatestCheckin = async () => {
             const { data } = await supabase
                 .from('checkins')

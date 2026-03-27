@@ -162,7 +162,7 @@ export default function WellnessTracker() {
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                     </svg>
                 </div>
-                <h3>Check-in saved.</h3>
+                <h3>Journal check-in saved.</h3>
                 <p>Thank you for taking a moment for your wellbeing.</p>
                 <button className="btn btn-primary" onClick={() => navigate('/')}>Back to home</button>
             </div>
@@ -172,7 +172,7 @@ export default function WellnessTracker() {
     return (
         <div className="page-wrapper">
             <div className="card" style={{ borderLeft: '4px solid var(--nscc-blue)', marginBottom: '24px' }}>
-                <div className="card-label" style={{ color: 'var(--nscc-blue)', fontWeight: 800 }}>Daily Reflection</div>
+                <div className="card-label" style={{ color: 'var(--nscc-blue)', fontWeight: 800 }}>Journal Check-In</div>
                 <h3 style={{ fontSize: '18px', marginBottom: '8px', color: 'var(--bark)', fontWeight: 700 }}>What is on your mind today?</h3>
                 <textarea className="journal-field"
                     placeholder="Take a deep breath and start typing..."
@@ -219,7 +219,7 @@ export default function WellnessTracker() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
                 <button className="btn btn-primary btn-full" onClick={handleSubmit} disabled={isSaving} style={{ background: 'var(--nscc-blue)' }}>
-                    {isSaving ? "Saving..." : "Confirm & Save Check-in \u00A0→"}
+                    {isSaving ? "Saving..." : "Confirm & Save Check-In \u00A0→"}
                 </button>
                 <button className="btn btn-ghost btn-full btn-sm" disabled={isSaving} onClick={() => navigate('/')}>Maybe later</button>
             </div>

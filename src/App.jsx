@@ -10,7 +10,7 @@ import Login from './pages/Login';
 
 function App() {
   return (
-    <>
+    <div className="app-shell">
       <TopBar />
       <div className="view-container">
         <Routes>
@@ -22,7 +22,7 @@ function App() {
         </Routes>
       </div>
       <CrisisButton />
-    </>
+    </div>
   );
 }
 

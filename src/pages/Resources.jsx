@@ -63,15 +63,14 @@ export default function Resources() {
                 <h2 className="section-head" style={{ color: 'var(--nscc-blue)' }}>Support & Resources</h2>
                 <p className="section-sub" style={{ marginTop: '4px' }}>You are not alone. There are people and places ready to help you navigate whatever you're facing.</p>
                 
-                {/* Primary Hub Link */}
+                {/* Primary App Link */}
                 <div className="card" style={{ marginTop: '20px', border: '1.5px solid var(--nscc-blue)', background: 'var(--sage-lt)', padding: '20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <span style={{ fontSize: '24px' }}>🏦</span>
                         <div>
-                            <h3 style={{ fontSize: '15px', color: 'var(--nscc-blue)', margin: 0 }}>NSCC Student Wellness Hub</h3>
-                            <p style={{ fontSize: '12px', color: 'var(--muted)', margin: '2px 0 10px' }}>The official central site for all student wellbeing services.</p>
+                            <h3 style={{ fontSize: '15px', color: 'var(--nscc-blue)', margin: 0 }}>NSCC Student Wellness App</h3>
+                            <p style={{ fontSize: '12px', color: 'var(--muted)', margin: '2px 0 10px' }}>The official central tool for your student wellness journey.</p>
                             <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub" target="_blank" rel="noreferrer" className="r-btn primary" style={{ display: 'inline-flex', padding: '8px 16px', fontSize: '12px' }}>
-                                Visit SharePoint Hub ↗
+                                Visit Student Wellness Hub ↗
                             </a>
                         </div>
                     </div>
@@ -82,7 +81,6 @@ export default function Resources() {
             {wellnessData && (
                 <div className="res-card insight-card" style={{ marginBottom: '16px', background: 'linear-gradient(135deg, var(--parchment) 0%, #fff 100%)', border: '1.5px solid var(--sage-lt)' }}>
                     <div className="r-header">
-                        <span className="r-icon">💡</span>
                         <h3 style={{ color: 'var(--sage)' }}>Self-Care Insight</h3>
                     </div>
                     <p style={{ fontStyle: 'italic', fontSize: '14px', color: 'var(--bark)', marginBottom: 0 }}>
@@ -113,7 +111,6 @@ export default function Resources() {
                 {/* Urgent Crisis */}
                 <div className="res-card urgent">
                     <div className="r-header">
-                        <span className="r-icon">🆘</span>
                         <h3>Urgent Crisis Support</h3>
                         <span className="r-badge">24/7</span>
                     </div>
@@ -128,7 +125,6 @@ export default function Resources() {
                 {/* NSCC Counselling */}
                 <div className="res-card">
                     <div className="r-header">
-                        <span className="r-icon">🪴</span>
                         <h3>NSCC Advising & Counselling</h3>
                     </div>
                     <p>Book a free, confidential session with an NSCC counsellor to discuss personal, academic, or career challenges.</p>
@@ -146,7 +142,6 @@ export default function Resources() {
                 {/* Food Security */}
                 <div className="res-card">
                     <div className="r-header">
-                        <span className="r-icon">🍎</span>
                         <h3>Food Security</h3>
                     </div>
                     <p>Access emergency food support, campus food banks, and community nutrition resources.</p>
@@ -164,7 +159,6 @@ export default function Resources() {
                 {/* Peer Support */}
                 <div className="res-card">
                     <div className="r-header">
-                        <span className="r-icon">🫂</span>
                         <h3>Peer & Community Support</h3>
                     </div>
                     <p>Connect with other students, student union programs, and affinity groups for shared experiences.</p>

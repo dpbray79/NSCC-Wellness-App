@@ -40,7 +40,7 @@
 html { font-size: 16px; }
 body {
   font-family: 'Nunito', system-ui, sans-serif;
-  background: var(--cream);
+  background: #E2E8F0; /* Slightly darker to make the shell pop */
   color: var(--bark);
   min-height: 100vh;
   overflow-y: auto;
@@ -56,22 +56,22 @@ body::before {
   opacity: .4;
 }
 
-/* ─── Layout shell ───────────────────────────────────────────────────────── */
-.shell {
+.app-shell {
   position: relative; z-index: 1;
-  max-width: 1200px;
+  max-width: 600px;
   width: 100%;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 100px;
+  background: var(--cream);
+  box-shadow: 0 0 60px rgba(0,0,0,0.05);
   overflow-y: visible;
 }
 
 @media (max-width: 600px) {
-  .shell {
-    padding-bottom: 120px; /* Space for Crisis FAB and bottom nav if any */
+  .app-shell {
+    box-shadow: none;
   }
 }
 
@@ -102,7 +102,7 @@ body::before {
 .btn-secondary { background: var(--parchment); color: var(--bark); }
 .btn-secondary:hover { background: var(--soft); }
 .btn-ghost     { background: transparent; color: var(--muted); border: 1.5px solid var(--soft); }
-.btn-full      { width: 100%; }
+.btn-full      { width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
 .btn-sm        { padding: 9px 18px; font-size: 12px; }
 
 /* ─── Floating orb decoration ────────────────────────────────────────────── */

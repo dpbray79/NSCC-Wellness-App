@@ -29,11 +29,11 @@ export default function TopBar() {
             <div className="topbar">
                 <img src={wellnessLogo} alt="NSCC Student Wellness" className="wellness-header-logo" />
                 <div className="logo-text">
-                    <h1>Student Wellness Hub</h1>
+                    <h1>Student Wellness App</h1>
                     <p>Nova Scotia Community College</p>
                 </div>
                 <div className="avatar-ring">
-                    <span style={{ fontSize: '15px' }}>🌿</span>
+                    <span style={{ fontSize: '12px', fontWeight: '800', color: 'var(--nscc-blue)' }}>WB</span>
                 </div>
             </div>
 

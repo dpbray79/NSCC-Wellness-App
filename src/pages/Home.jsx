@@ -5,26 +5,79 @@ import { Modal } from 'react-bootstrap';
 import './home.css';
 
 const METRIC_DEETS = {
-    sleep: { title: "Sleep Quality", icon: "🌙", color: "var(--nscc-blue)", 
-        calc: "Calculated from self-reported restfulness.", why: "Foundation for memory and emotional stability at NSCC." },
-    stress: { title: "Perceived Stress", icon: "🌊", color: "var(--terra)", 
-        calc: "Measured using an inverted scale (Higher = Lower Stress).", why: "Crucial for preventing academic burnout." },
-    cognitive: { title: "Cognitive Energy", icon: "✨", color: "var(--slate)", 
-        calc: "Measure of mental alertness and focus.", why: "Helps schedule high-focus tasks during peak periods." },
-    social: { title: "Social Belonging", icon: "🤲", color: "var(--amber)", 
-        calc: "Sense of connection to the NSCC community.", why: "Key predictor of retention and wellbeing." },
-    food_security: { title: "Food Security", icon: "🍃", color: "var(--nscc-teal)", 
-        calc: "Access to sufficient, safe, and nutritious food.", why: "Fundamental fuel for learning and focus." }
+    sleep: { title: "Sleep Quality", color: "var(--nscc-blue)", 
+        calc: "Average quality of rest over the selected period.", why: "Restorative sleep is crucial for cognitive function and emotional regulation." },
+    stress: { title: "Stress Balance", color: "var(--terra)", 
+        calc: "Resilience against daily pressures and academic load.", why: "Managing stress prevents burnout and improves long-term focus." },
+    cognitive: { title: "Cognitive Energy", color: "var(--slate)", 
+        calc: "Mental clarity and sharpness for learning.", why: "High cognitive energy correlates with better academic performance." },
+    social: { title: "Social Belonging", color: "var(--amber)", 
+        calc: "Sense of connection to the NSCC community.", why: "Key predictor of retention and wellbeing." }
 };
+
+const PillarProgressBar = ({ val, color, label }) => (
+    <div className="pillar-progress-wrap">
+        <div className="pillar-progress-head">
+            <span className="p-avg-label">{label}</span>
+            <span className="p-avg-val" style={{ color }}>{val.toFixed(1)}</span>
+        </div>
+        <div className="pillar-progress-track">
+            <div className="pillar-progress-fill" style={{ width: `${val * 10}%`, backgroundColor: color }}></div>
+        </div>
+    </div>
+);
+
+const MiniPillarBarChart = ({ history, attr, color }) => {
+    if (!history || history.length === 0) return null;
+    const last7 = history.slice(-7);
+    const maxVal = 10;
+    const barWidth = 6;
+    const gap = 4;
+    const height = 30;
+    const width = (barWidth + gap) * 7 - gap;
+
+    return (
+        <div className="mini-bar-wrap">
+            <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+                {last7.map((d, i) => {
+                    const h = (d[attr] / maxVal) * height;
+                    const x = i * (barWidth + gap);
+                    const y = height - h;
+                    const isLatest = i === last7.length - 1;
+                    return (
+                        <rect key={i} x={x} y={y} width={barWidth} height={h} fill={isLatest ? color : 'var(--parchment)'} rx="2" 
+                              style={{ opacity: isLatest ? 1 : 0.4 + (i * 0.08) }} />
+                    );
+                })}
+            </svg>
+        </div>
+    );
+};
+
+// HolisticRadarChart removed for simplicity and readability as per user request.
 
 const MonthlyProgressionChart = ({ data }) => {
     if (!data || data.length < 2) return <div className="no-data">Insufficient data for trend analysis.</div>;
     const width = 400; const height = 140; const padding = 30; const maxVal = 10;
-    const points = data.map((d, i) => {
+
+    // Calculate 3-day rolling average for smoothing
+    const smoothedData = data.map((d, i) => {
+        const windowSize = 3;
+        const start = Math.max(0, i - Math.floor(windowSize / 2));
+        const end = Math.min(data.length, start + windowSize);
+        const window = data.slice(start, end);
+        const avg = window.reduce((sum, curr) => sum + curr.composite, 0) / window.length;
+        return { ...d, rollingAvg: avg };
+    });
+
+    const getPoints = (attr) => smoothedData.map((d, i) => {
         const x = (i / (data.length - 1)) * (width - padding * 2) + padding;
-        const y = height - ((d.composite / maxVal) * (height - padding * 2) + padding);
+        const y = height - ((d[attr] / maxVal) * (height - padding * 2) + padding);
         return `${x},${y}`;
     }).join(' ');
+
+    const rawPoints = getPoints('composite');
+    const rollingPoints = getPoints('rollingAvg');
 
     return (
         <div className="progression-chart-wrap">
@@ -35,17 +88,24 @@ const MonthlyProgressionChart = ({ data }) => {
                         <stop offset="100%" stopColor="var(--nscc-teal)" stopOpacity="0" />
                     </linearGradient>
                 </defs>
-                <path d={`M ${padding},${height-padding} ${points} L ${width-padding},${height-padding} Z`} fill="url(#lineGrad)" />
-                <polyline fill="none" stroke="var(--nscc-blue)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" points={points} className="trend-line-path" />
+                <path d={`M ${padding},${height-padding} ${rollingPoints} L ${width-padding},${height-padding} Z`} fill="url(#lineGrad)" />
+                
+                {/* Raw Data (Subtle Dashed) */}
+                <polyline fill="none" stroke="var(--parchment)" strokeWidth="1" strokeDasharray="3,2" points={rawPoints} />
+                
+                {/* Rolling Average (Bold Primary) */}
+                <polyline fill="none" stroke="var(--nscc-blue)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" points={rollingPoints} className="trend-line-path" />
+                
                 {data.map((d, i) => {
                     const x = (i / (data.length - 1)) * (width - padding * 2) + padding;
-                    const y = height - ((d.composite / maxVal) * (height - padding * 2) + padding);
-                    return <circle key={i} cx={x} cy={y} r="3.5" fill="var(--warm-white)" stroke="var(--nscc-blue)" strokeWidth="1.5" />;
+                    const y = height - ((smoothedData[i].rollingAvg / maxVal) * (height - padding * 2) + padding);
+                    return <circle key={i} cx={x} cy={y} r="3" fill="var(--warm-white)" stroke="var(--nscc-blue)" strokeWidth="1.5" />;
                 })}
             </svg>
             <div className="chart-labels">
                 <span className="chart-label-start">{new Date(data[0].created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
-                <span className="chart-label-end" style={{ marginLeft: 'auto' }}>{new Date(data[data.length-1].created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
+                <span className="chart-label-info">7-Day Rolling Trend</span>
+                <span className="chart-label-end">{new Date(data[data.length-1].created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
             </div>
         </div>
     );
@@ -53,27 +113,43 @@ const MonthlyProgressionChart = ({ data }) => {
 
 export default function Home() {
     const navigate = useNavigate();
-    const [metrics, setMetrics] = useState({ sleep: 7, stress: 5, cognitive: 6, social: 8, food_security: 5, composite: 6.2 });
     const [history, setHistory] = useState([]);
+    const [avgRange, setAvgRange] = useState('7d'); // '7d' or '30d'
     const [loading, setLoading] = useState(true);
     const [showInfo, setShowInfo] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data, error } = await supabase.from('checkins').select('*').order('created_at', { ascending: true }).limit(10);
-            if (data && !error) {
-                setHistory(data);
-                if (data.length > 0) setMetrics(data[data.length - 1]);
-            }
-            setLoading(false);
-        };
-        fetchData();
-    }, []);
+    useEffect(() => { fetchHistory(); }, []);
 
-    const calcOffset = (val) => 113 - (113 * (val / 10));
-    const calcStressOffset = (val) => 113 - (113 * ((10 - val) / 10));
+    async function fetchHistory() {
+        try {
+            const { data, error } = await supabase
+                .from('checkins')
+                .select('*')
+                .order('created_at', { ascending: true })
+                .limit(30);
+            if (data) setHistory(data);
+        } catch (e) { console.error(e); } finally { setLoading(e => false); }
+    }
 
-    if (loading) return <div className="hub-loader"><div className="hub-spinner"></div><p>Syncing Hub...</p></div>;
+    const calculateAvg = (attr) => {
+        if (!history || history.length === 0) return 0;
+        const count = avgRange === '7d' ? 7 : 30;
+        const recent = history.slice(-count);
+        const sum = recent.reduce((acc, curr) => acc + (curr[attr] || 0), 0);
+        return sum / recent.length;
+    };
+
+    const latest = history[history.length - 1] || {};
+    const metrics = {
+        sleep: calculateAvg('sleep'),
+        stress: calculateAvg('stress'),
+        cognitive: calculateAvg('cognitive'),
+        social: calculateAvg('social')
+    };
+
+    const overallIndex = (metrics.sleep + metrics.stress + metrics.cognitive + metrics.social) / 4;
+
+    if (loading) return <div className="hub-loader"><div className="hub-spinner"></div><p>Syncing App...</p></div>;
 
     return (
         <div className="dashboard-container">
@@ -82,14 +158,14 @@ export default function Home() {
                 <div className="header-left">
                     <div className="hub-tag">
                         <svg width="12" height="12" viewBox="0 0 14 14" fill="var(--nscc-teal)"><path d="M7 0L0 3V7C0 10.3 3.1 13.3 7 14C10.9 13.3 14 10.3 14 7V3L7 0Z" opacity="0.8"/></svg>
-                        <span>Student Wellness Hub</span>
+                        <span>Student Wellness App</span>
                     </div>
                     <h1>Student Dashboard</h1>
                     <p className="welcome-sub">Welcome back, William. Here is your current wellness snapshot.</p>
                 </div>
                 <div className="header-right">
                     <div className="status-badge">
-                        <div className="status-score">{metrics.composite.toFixed(1)}</div>
+                        <div className="status-score">{overallIndex.toFixed(1)}</div>
                         <div className="status-label">Overall Index</div>
                     </div>
                 </div>
@@ -108,6 +184,40 @@ export default function Home() {
                     </div>
                 </section>
 
+                {/* Grid Item: Pillars Grid */}
+                <section className="grid-item pillars-view">
+                    <div className="item-inner">
+                        <div className="section-head-with-controls">
+                            <h2 className="section-title">Core Pillars</h2>
+                            <div className="dashboard-controls">
+                                <div className="segment-toggle">
+                                    <button className={avgRange === '7d' ? 'active' : ''} onClick={() => setAvgRange('7d')}>7 Day</button>
+                                    <button className={avgRange === '30d' ? 'active' : ''} onClick={() => setAvgRange('30d')}>Monthly</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pillars-container-b2b">
+                            <div className="pillars-b2b-grid">
+                                    {Object.entries(METRIC_DEETS).map(([key, deet]) => {
+                                        const avg = metrics[key];
+                                        return (
+                                            <div key={key} className="pillar-box" onClick={() => navigate('/checkin')}>
+                                                <div className="pillar-header">
+                                                    <span className="p-title-small">{deet.title}</span>
+                                                    <button className="info-trigger" onClick={(e) => { e.stopPropagation(); setShowInfo(key); }}>i</button>
+                                                </div>
+                                                <div className="pillar-body">
+                                                    <PillarProgressBar val={avg} color={deet.color} label={`${avgRange === '7d' ? '7D' : '30D'} Average`} />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Grid Item: Trend Visualization */}
                 <section className="grid-item trend-view">
                     <div className="item-inner">
@@ -116,51 +226,12 @@ export default function Home() {
                         <MonthlyProgressionChart data={history} />
                     </div>
                 </section>
-
-                {/* Grid Item: Pillars Grid (nested or distinct) */}
-                <section className="grid-item pillars-view">
-                    <div className="item-inner">
-                        <div className="section-header-row">
-                            <div className="card-label-mini">Core Pillars</div>
-                            <span className="info-tip">Select icon for details</span>
-                        </div>
-                        
-                        <div className="pillars-b2b-grid">
-                            {Object.keys(METRIC_DEETS).map(key => {
-                                const deet = METRIC_DEETS[key];
-                                const val = metrics[key === 'stress' ? 'stress' : (key === 'cognitive' ? 'cognitive' : key)];
-                                const offset = key === 'stress' ? calcStressOffset(val) : calcOffset(val);
-                                
-                                return (
-                                    <div key={key} className={`pillar-box ${key === 'food_security' ? 'wide-box' : ''}`} onClick={() => navigate(key === 'food_security' ? '/resources' : '/checkin')}>
-                                        <div className="pillar-header">
-                                            <span className="p-icon-small">{deet.icon}</span>
-                                            <span className="p-title-small">{deet.title}</span>
-                                            <button className="info-trigger" onClick={(e) => { e.stopPropagation(); setShowInfo(key); }}>i</button>
-                                        </div>
-                                        <div className="pillar-body">
-                                            <div className="arc-mini">
-                                                <svg width="60" height="38" viewBox="0 0 80 50">
-                                                    <path d="M 8 48 A 36 36 0 0 1 72 48" fill="none" stroke="var(--parchment)" strokeWidth="8" strokeLinecap="round" />
-                                                    <path className="arc-animated" d="M 8 48 A 36 36 0 0 1 72 48" fill="none" stroke={deet.color} strokeWidth="8" strokeLinecap="round"
-                                                        strokeDasharray="113" strokeDashoffset={offset} />
-                                                </svg>
-                                                <div className="arc-val-mini" style={{ color: deet.color }}>{val}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
             </main>
 
             {/* Info Modal */}
             <Modal show={!!showInfo} onHide={() => setShowInfo(null)} centered contentClassName="professional-modal">
                 <Modal.Body>
                     <div className="prof-modal-header">
-                        <span className="prof-modal-emoji">{showInfo && METRIC_DEETS[showInfo].icon}</span>
                         <h3>{showInfo && METRIC_DEETS[showInfo].title}</h3>
                     </div>
                     <div className="prof-modal-content">

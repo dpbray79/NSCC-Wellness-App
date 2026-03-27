@@ -1,19 +1,6 @@
 import { NavLink } from 'react-router-dom';
+import wellnessLogo from '../../assets/student_wellness_logo.png';
 import './layout.css';
-
-// NSCC Student Wellness Hub inline SVG logo
-const NSCCLogo = () => (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-        <rect width="36" height="36" rx="10" fill="#004780"/>
-        {/* Shield shape */}
-        <path d="M18 6L7 10V18C7 23.5 12 28.5 18 30C24 28.5 29 23.5 29 18V10L18 6Z" fill="white" opacity="0.15"/>
-        <path d="M18 8L9 11.5V18C9 22.8 13.2 27.2 18 28.5C22.8 27.2 27 22.8 27 18V11.5L18 8Z" fill="white" opacity="0.2"/>
-        {/* Heart with leaf */}
-        <path d="M18 23C18 23 11 18.5 11 14.5C11 12.5 12.5 11 14.5 11C16 11 17.2 11.9 18 13C18.8 11.9 20 11 21.5 11C23.5 11 25 12.5 25 14.5C25 18.5 18 23 18 23Z" fill="#00BCD4"/>
-        {/* Small leaf accent */}
-        <path d="M18 13C18 13 20 11 22 12C20.5 12.5 19 14 18 16C17 14 15.5 12.5 14 12C16 11 18 13 18 13Z" fill="white" opacity="0.6"/>
-    </svg>
-);
 
 const HomeIcon = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -40,9 +27,9 @@ export default function TopBar() {
     return (
         <>
             <div className="topbar">
-                <NSCCLogo />
+                <img src={wellnessLogo} alt="NSCC Student Wellness" className="wellness-header-logo" />
                 <div className="logo-text">
-                    <h1>Student Wellness Hub</h1>
+                    <h1>Hub</h1>
                     <p>Nova Scotia Community College</p>
                 </div>
                 <div className="avatar-ring">

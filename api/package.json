@@ -1,0 +1,11 @@
+{
+  "name": "wellness-api",
+  "version": "1.0.0",
+  "description": "Azure Functions API for NSCC Wellness",
+  "main": "index.js",
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "openai": "^4.20.0",
+    "pg": "^8.20.0"
+  }
+}

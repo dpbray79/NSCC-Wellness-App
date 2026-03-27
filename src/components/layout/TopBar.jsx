@@ -33,7 +33,7 @@ export default function TopBar() {
                     <p>Nova Scotia Community College</p>
                 </div>
                 <div className="avatar-ring">
-                    <span style={{ fontSize: '15px' }}>🌿</span>
+                    <span style={{ fontSize: '12px', fontWeight: '800', color: 'var(--nscc-blue)' }}>WB</span>
                 </div>
             </div>
 

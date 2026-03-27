@@ -26,23 +26,24 @@ const MSGS = [
 const RadarInput = ({ values, onChange }) => {
     const size = 260;
     const center = size / 2;
-    const radius = size * 0.4;
+    const radius = 80;
+    const svgSize = 340;
     
     const getPoint = (val, angle) => {
         const r = (val / 10) * radius;
         const rad = (angle - 90) * (Math.PI / 180);
-        return { x: center + r * Math.cos(rad), y: center + r * Math.sin(rad) };
+        return { x: svgSize/2 + r * Math.cos(rad), y: svgSize/2 + r * Math.sin(rad) };
     };
 
     const handleDrag = (e, key, angle) => {
         const svg = e.currentTarget.closest('svg');
         const rect = svg.getBoundingClientRect();
         const touch = e.touches ? e.touches[0] : e;
-        const x = touch.clientX - rect.left - center;
-        const y = touch.clientY - rect.top - center;
+        const x = touch.clientX - rect.left - (rect.width/2);
+        const y = touch.clientY - rect.top - (rect.height/2);
         
         const axisRad = (angle - 90) * (Math.PI / 180);
-        const dist = (x * Math.cos(axisRad) + y * Math.sin(axisRad));
+        const dist = (x * (svgSize/rect.width) * Math.cos(axisRad) + y * (svgSize/rect.height) * Math.sin(axisRad));
         const val = Math.max(0, Math.min(10, (dist / radius) * 10));
         onChange(key, Math.round(val * 10) / 10);
     };
@@ -59,14 +60,14 @@ const RadarInput = ({ values, onChange }) => {
 
     return (
         <div className="radar-input-container">
-            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} onTouchMove={(e) => e.preventDefault()}>
+            <svg width="280" height="280" viewBox={`0 0 ${svgSize} ${svgSize}`} onTouchMove={(e) => e.preventDefault()}>
                 {[2.5, 5, 7.5, 10].map(l => {
                     const pts = axes.map(a => getPoint(l, a.angle));
                     const path = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
                     return <path key={l} d={path} fill="none" stroke="var(--parchment)" strokeWidth="1" strokeDasharray="3,3" />;
                 })}
                 {axes.map(a => (
-                    <line key={a.key} x1={center} y1={center} x2={getPoint(10, a.angle).x} y2={getPoint(10, a.angle).y} stroke="var(--parchment)" strokeWidth="1" />
+                    <line key={a.key} x1={svgSize/2} y1={svgSize/2} x2={getPoint(10, a.angle).x} y2={getPoint(10, a.angle).y} stroke="var(--parchment)" strokeWidth="1" />
                 ))}
                 <path d={polyPath} fill="rgba(0, 71, 128, 0.1)" stroke="var(--nscc-blue)" strokeWidth="2" strokeLinejoin="round" />
                 {axes.map(a => {
@@ -81,13 +82,23 @@ const RadarInput = ({ values, onChange }) => {
                            }}
                            onTouchMove={(e) => handleDrag(e, a.key, a.angle)}
                         >
-                            <circle cx={p.x} cy={p.y} r="12" fill="white" stroke={a.color} strokeWidth="2" style={{ cursor: 'grab' }} />
-                            <text x={getPoint(12.5, a.angle).x} y={getPoint(12.5, a.angle).y} textAnchor="middle" dominantBaseline="middle" fontSize="10" fontWeight="800" fill="var(--muted)">{a.label}</text>
+                            <circle cx={p.x} cy={p.y} r="14" fill="white" stroke={a.color} strokeWidth="3" style={{ cursor: 'grab', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} />
+                            <text 
+                                x={getPoint(13.5, a.angle).x} 
+                                y={getPoint(13.5, a.angle).y} 
+                                textAnchor="middle" 
+                                dominantBaseline="middle" 
+                                fontSize="12" 
+                                fontWeight="900" 
+                                fill="var(--bark)"
+                            >
+                                {a.label}
+                            </text>
                         </g>
                     );
                 })}
             </svg>
-            <div className="radar-hint">Drag the white circles to adjust metrics</div>
+            <div className="radar-hint">Drag the circles to track your wellness</div>
         </div>
     );
 };
@@ -100,7 +111,6 @@ export default function WellnessTracker() {
     const [social, setSocial] = useState(8);
     const [journal, setJournal] = useState("");
     const [composite, setComposite] = useState(6.5);
-    const [viewMode, setViewMode] = useState('radar');
     const [submitted, setSubmitted] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -147,7 +157,11 @@ export default function WellnessTracker() {
     if (submitted) {
         return (
             <div className="success-state">
-                <div className="success-icon">🌿</div>
+                <div className="success-icon-svg">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--nscc-teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
                 <h3>Check-in saved.</h3>
                 <p>Thank you for taking a moment for your wellbeing.</p>
                 <button className="btn btn-primary" onClick={() => navigate('/')}>Back to home</button>
@@ -169,37 +183,29 @@ export default function WellnessTracker() {
             </div>
 
             <div className="card">
-                <div className="checkin-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <div className="checkin-header-row" style={{ marginBottom: '15px' }}>
                     <div className="card-label" style={{ marginBottom: 0 }}>Core Pillars</div>
-                    <div className="view-toggle">
-                        <button className={viewMode === 'radar' ? 'active' : ''} onClick={() => setViewMode('radar')}>Radar</button>
-                        <button className={viewMode === 'sliders' ? 'active' : ''} onClick={() => setViewMode('sliders')}>Sliders</button>
-                    </div>
                 </div>
 
                 <div className="checkin-content">
-                    {viewMode === 'radar' ? (
-                        <RadarInput values={{ sleep, stress, cog, social }} onChange={handleRadarChange} />
-                    ) : (
-                        <div className="pillar-checkin">
-                            <div className="p-row">
-                                <div className="p-row-head"><span>🌙</span><span className="p-name">Sleep Quality</span><span className="p-num" style={{ color: 'var(--nscc-blue)' }}>{sleep}</span></div>
-                                <input type="range" className="p-slider" min="0" max="10" step="0.5" value={sleep} style={{ background: getGradient(sleep, 'var(--nscc-blue)'), color: 'var(--nscc-blue)' }} onChange={(e) => setSleep(Number(e.target.value))} />
-                            </div>
-                            <div className="p-row">
-                                <div className="p-row-head"><span>🌊</span><span className="p-name">Stress Balance</span><span className="p-num" style={{ color: 'var(--terra)' }}>{stress}</span></div>
-                                <input type="range" className="p-slider" min="0" max="10" step="0.5" value={stress} style={{ background: getGradient(stress, 'var(--terra)'), color: 'var(--terra)' }} onChange={(e) => setStress(Number(e.target.value))} />
-                            </div>
-                            <div className="p-row">
-                                <div className="p-row-head"><span>✨</span><span className="p-name">Cognitive Energy</span><span className="p-num" style={{ color: 'var(--slate)' }}>{cog}</span></div>
-                                <input type="range" className="p-slider" min="0" max="10" step="0.5" value={cog} style={{ background: getGradient(cog, 'var(--slate)'), color: 'var(--slate)' }} onChange={(e) => setCog(Number(e.target.value))} />
-                            </div>
-                            <div className="p-row">
-                                <div className="p-row-head"><span>🤲</span><span className="p-name">Social Belonging</span><span className="p-num" style={{ color: 'var(--amber)' }}>{social}</span></div>
-                                <input type="range" className="p-slider" min="0" max="10" step="0.5" value={social} style={{ background: getGradient(social, 'var(--amber)'), color: 'var(--amber)' }} onChange={(e) => setSocial(Number(e.target.value))} />
-                            </div>
+                    <div className="pillar-checkin">
+                        <div className="p-row">
+                            <div className="p-row-head"><span className="p-name">Sleep Quality</span><span className="p-num" style={{ color: 'var(--nscc-blue)' }}>{sleep}</span></div>
+                            <input type="range" className="p-slider" min="0" max="10" step="0.5" value={sleep} style={{ background: getGradient(sleep, 'var(--nscc-blue)'), color: 'var(--nscc-blue)' }} onChange={(e) => setSleep(Number(e.target.value))} />
                         </div>
-                    )}
+                        <div className="p-row">
+                            <div className="p-row-head"><span className="p-name">Stress Balance</span><span className="p-num" style={{ color: 'var(--terra)' }}>{stress}</span></div>
+                            <input type="range" className="p-slider" min="0" max="10" step="0.5" value={stress} style={{ background: getGradient(stress, 'var(--terra)'), color: 'var(--terra)' }} onChange={(e) => setStress(Number(e.target.value))} />
+                        </div>
+                        <div className="p-row">
+                            <div className="p-row-head"><span className="p-name">Cognitive Energy</span><span className="p-num" style={{ color: 'var(--slate)' }}>{cog}</span></div>
+                            <input type="range" className="p-slider" min="0" max="10" step="0.5" value={cog} style={{ background: getGradient(cog, 'var(--slate)'), color: 'var(--slate)' }} onChange={(e) => setCog(Number(e.target.value))} />
+                        </div>
+                        <div className="p-row">
+                            <div className="p-row-head"><span className="p-name">Social Belonging</span><span className="p-num" style={{ color: 'var(--amber)' }}>{social}</span></div>
+                            <input type="range" className="p-slider" min="0" max="10" step="0.5" value={social} style={{ background: getGradient(social, 'var(--amber)'), color: 'var(--amber)' }} onChange={(e) => setSocial(Number(e.target.value))} />
+                        </div>
+                    </div>
 
                     <div style={{ marginTop: '22px', paddingTop: '18px', borderTop: '1px solid var(--parchment)' }}>
                         <div className="composite-bar-wrap">
@@ -211,7 +217,7 @@ export default function WellnessTracker() {
                 </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
                 <button className="btn btn-primary btn-full" onClick={handleSubmit} disabled={isSaving} style={{ background: 'var(--nscc-blue)' }}>
                     {isSaving ? "Saving..." : "Confirm & Save Check-in \u00A0→"}
                 </button>

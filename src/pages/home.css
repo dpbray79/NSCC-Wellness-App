@@ -111,11 +111,44 @@
     margin-bottom: 8px;
 }
 
-.section-header-row {
+.section-head-with-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.dashboard-controls {
+    display: flex;
+    gap: 12px;
+}
+
+.segment-toggle {
+    display: flex;
+    background: var(--parchment);
+    padding: 3px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.segment-toggle button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.segment-toggle button.active {
+    background: #fff;
+    color: var(--nscc-blue);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .info-tip {
@@ -176,8 +209,56 @@
     margin-bottom: 12px;
 }
 
-.p-icon-small { font-size: 16px; }
-.p-title-small { font-size: 11px; font-weight: 800; color: var(--bark); }
+.p-title-small { font-size: 11px; font-weight: 800; color: var(--bark); text-transform: uppercase; letter-spacing: 0.8px; }
+
+/* ─── Pillar Body Visuals ───────────────────────────────────────────────── */
+.pillar-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pillar-progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pillar-progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.p-avg-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--soft);
+}
+
+.p-avg-val {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.pillar-progress-track {
+    height: 6px;
+    background: var(--parchment);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.pillar-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mini-bar-wrap {
+    margin-top: 4px;
+    opacity: 0.8;
+}
 
 .info-trigger {
     margin-left: auto;
@@ -223,9 +304,19 @@
     letter-spacing: 0.5px;
 }
 
+.radar-view-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    background: #fcfdfe;
+    border-radius: 20px;
+    border: 1px dashed var(--parchment);
+}
+
 @media (max-width: 850px) {
-    .pillars-layout-flex {
+    .section-head-with-controls {
         flex-direction: column;
+        align-items: flex-start;
     }
 }
 

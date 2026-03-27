@@ -5,15 +5,27 @@ import { Modal } from 'react-bootstrap';
 import './home.css';
 
 const METRIC_DEETS = {
-    sleep: { title: "Sleep Quality", icon: "🌙", color: "var(--nscc-blue)", 
-        calc: "Calculated from self-reported restfulness.", why: "Foundation for memory and emotional stability at NSCC." },
-    stress: { title: "Perceived Stress", icon: "🌊", color: "var(--terra)", 
-        calc: "Measured using an inverted scale (Higher = Lower Stress).", why: "Crucial for preventing academic burnout." },
-    cognitive: { title: "Cognitive Energy", icon: "✨", color: "var(--slate)", 
-        calc: "Measure of mental alertness and focus.", why: "Helps schedule high-focus tasks during peak periods." },
-    social: { title: "Social Belonging", icon: "🤲", color: "var(--amber)", 
+    sleep: { title: "Sleep Quality", color: "var(--nscc-blue)", 
+        calc: "Average quality of rest over the selected period.", why: "Restorative sleep is crucial for cognitive function and emotional regulation." },
+    stress: { title: "Stress Balance", color: "var(--terra)", 
+        calc: "Resilience against daily pressures and academic load.", why: "Managing stress prevents burnout and improves long-term focus." },
+    cognitive: { title: "Cognitive Energy", color: "var(--slate)", 
+        calc: "Mental clarity and sharpness for learning.", why: "High cognitive energy correlates with better academic performance." },
+    social: { title: "Social Belonging", color: "var(--amber)", 
         calc: "Sense of connection to the NSCC community.", why: "Key predictor of retention and wellbeing." }
 };
+
+const PillarProgressBar = ({ val, color, label }) => (
+    <div className="pillar-progress-wrap">
+        <div className="pillar-progress-head">
+            <span className="p-avg-label">{label}</span>
+            <span className="p-avg-val" style={{ color }}>{val.toFixed(1)}</span>
+        </div>
+        <div className="pillar-progress-track">
+            <div className="pillar-progress-fill" style={{ width: `${val * 10}%`, backgroundColor: color }}></div>
+        </div>
+    </div>
+);
 
 const MiniPillarBarChart = ({ history, attr, color }) => {
     if (!history || history.length === 0) return null;
@@ -42,57 +54,7 @@ const MiniPillarBarChart = ({ history, attr, color }) => {
     );
 };
 
-const HolisticRadarChart = ({ metrics }) => {
-    const size = 180;
-    const center = size / 2;
-    const radius = size * 0.35;
-    
-    // 4 Axes: Top=Sleep, Right=Stress, Bottom=Cognitive, Left=Social
-    const getPoint = (val, angle) => {
-        const r = (val / 10) * radius;
-        const rad = (angle - 90) * (Math.PI / 180);
-        return {
-            x: center + r * Math.cos(rad),
-            y: center + r * Math.sin(rad)
-        };
-    };
-
-    const pSleep = getPoint(metrics.sleep, 0);
-    const pStress = getPoint(metrics.stress, 90);
-    const pCognitive = getPoint(metrics.cognitive, 180);
-    const pSocial = getPoint(metrics.social, 270);
-
-    const levels = [2.5, 5, 7.5, 10];
-    
-    return (
-        <div className="radar-chart-wrap">
-            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-                {/* Background Grid */}
-                {levels.map(level => {
-                    const lSleep = getPoint(level, 0);
-                    const lStress = getPoint(level, 90);
-                    const lCognitive = getPoint(level, 180);
-                    const lSocial = getPoint(level, 270);
-                    return <path key={level} d={`M ${lSleep.x} ${lSleep.y} L ${lStress.x} ${lStress.y} L ${lCognitive.x} ${lCognitive.y} L ${lSocial.x} ${lSocial.y} Z`} 
-                                 fill="none" stroke="var(--parchment)" strokeWidth="1" strokeDasharray={level === 10 ? "0" : "2,2"} />;
-                })}
-                {/* Axes */}
-                {[0, 90, 180, 270].map(angle => {
-                    const end = getPoint(10, angle);
-                    return <line key={angle} x1={center} y1={center} x2={end.x} y2={end.y} stroke="var(--parchment)" strokeWidth="1" />;
-                })}
-                {/* Data Polygon */}
-                <path d={`M ${pSleep.x} ${pSleep.y} L ${pStress.x} ${pStress.y} L ${pCognitive.x} ${pCognitive.y} L ${pSocial.x} ${pSocial.y} Z`} 
-                      fill="rgba(0, 71, 128, 0.15)" stroke="var(--nscc-blue)" strokeWidth="2" strokeLinejoin="round" />
-                {/* Labels */}
-                <text x={center} y={center - radius - 10} textAnchor="middle" fontSize="10" fontWeight="700" fill="var(--muted)">SLEEP</text>
-                <text x={center + radius + 10} y={center + 4} textAnchor="start" fontSize="10" fontWeight="700" fill="var(--muted)">STRESS</text>
-                <text x={center} y={center + radius + 15} textAnchor="middle" fontSize="10" fontWeight="700" fill="var(--muted)">BRAIN</text>
-                <text x={center - radius - 10} y={center + 4} textAnchor="end" fontSize="10" fontWeight="700" fill="var(--muted)">SOCIAL</text>
-            </svg>
-        </div>
-    );
-};
+// HolisticRadarChart removed for simplicity and readability as per user request.
 
 const MonthlyProgressionChart = ({ data }) => {
     if (!data || data.length < 2) return <div className="no-data">Insufficient data for trend analysis.</div>;
@@ -151,25 +113,41 @@ const MonthlyProgressionChart = ({ data }) => {
 
 export default function Home() {
     const navigate = useNavigate();
-    const [metrics, setMetrics] = useState({ sleep: 7, stress: 5, cognitive: 6, social: 8, composite: 6.2 });
     const [history, setHistory] = useState([]);
+    const [avgRange, setAvgRange] = useState('7d'); // '7d' or '30d'
     const [loading, setLoading] = useState(true);
     const [showInfo, setShowInfo] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data, error } = await supabase.from('checkins').select('*').order('created_at', { ascending: true }).limit(10);
-            if (data && !error) {
-                setHistory(data);
-                if (data.length > 0) setMetrics(data[data.length - 1]);
-            }
-            setLoading(false);
-        };
-        fetchData();
-    }, []);
+    useEffect(() => { fetchHistory(); }, []);
 
-    const calcOffset = (val) => 113 - (113 * (val / 10));
-    const calcStressOffset = (val) => 113 - (113 * ((10 - val) / 10));
+    async function fetchHistory() {
+        try {
+            const { data, error } = await supabase
+                .from('checkins')
+                .select('*')
+                .order('created_at', { ascending: true })
+                .limit(30);
+            if (data) setHistory(data);
+        } catch (e) { console.error(e); } finally { setLoading(e => false); }
+    }
+
+    const calculateAvg = (attr) => {
+        if (!history || history.length === 0) return 0;
+        const count = avgRange === '7d' ? 7 : 30;
+        const recent = history.slice(-count);
+        const sum = recent.reduce((acc, curr) => acc + (curr[attr] || 0), 0);
+        return sum / recent.length;
+    };
+
+    const latest = history[history.length - 1] || {};
+    const metrics = {
+        sleep: calculateAvg('sleep'),
+        stress: calculateAvg('stress'),
+        cognitive: calculateAvg('cognitive'),
+        social: calculateAvg('social')
+    };
+
+    const overallIndex = (metrics.sleep + metrics.stress + metrics.cognitive + metrics.social) / 4;
 
     if (loading) return <div className="hub-loader"><div className="hub-spinner"></div><p>Syncing App...</p></div>;
 
@@ -187,7 +165,7 @@ export default function Home() {
                 </div>
                 <div className="header-right">
                     <div className="status-badge">
-                        <div className="status-score">{metrics.composite.toFixed(1)}</div>
+                        <div className="status-score">{overallIndex.toFixed(1)}</div>
                         <div className="status-label">Overall Index</div>
                     </div>
                 </div>
@@ -209,37 +187,33 @@ export default function Home() {
                 {/* Grid Item: Pillars Grid */}
                 <section className="grid-item pillars-view">
                     <div className="item-inner">
-                        <div className="section-header-row">
-                            <div className="card-label-mini">Core Pillars</div>
-                            <span className="info-tip">Select icon for details</span>
+                        <div className="section-head-with-controls">
+                            <h2 className="section-title">Core Pillars</h2>
+                            <div className="dashboard-controls">
+                                <div className="segment-toggle">
+                                    <button className={avgRange === '7d' ? 'active' : ''} onClick={() => setAvgRange('7d')}>7 Day</button>
+                                    <button className={avgRange === '30d' ? 'active' : ''} onClick={() => setAvgRange('30d')}>Monthly</button>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div className="pillars-layout-flex">
-                            <div className="radar-container">
-                                <HolisticRadarChart metrics={metrics} />
-                            </div>
-                            
+
+                        <div className="pillars-container-b2b">
                             <div className="pillars-b2b-grid">
-                                {Object.keys(METRIC_DEETS).map(key => {
-                                    const deet = METRIC_DEETS[key];
-                                    const val = metrics[key === 'stress' ? 'stress' : (key === 'cognitive' ? 'cognitive' : key)];
-                                    const offset = key === 'stress' ? calcStressOffset(val) : calcOffset(val);
-                                    
-                                    return (
-                                        <div key={key} className="pillar-box" onClick={() => navigate('/checkin')}>
-                                            <div className="pillar-header">
-                                                <span className="p-icon-small">{deet.icon}</span>
-                                                <span className="p-title-small">{deet.title}</span>
-                                                <button className="info-trigger" onClick={(e) => { e.stopPropagation(); setShowInfo(key); }}>i</button>
+                                    {Object.entries(METRIC_DEETS).map(([key, deet]) => {
+                                        const avg = metrics[key];
+                                        return (
+                                            <div key={key} className="pillar-box" onClick={() => navigate('/checkin')}>
+                                                <div className="pillar-header">
+                                                    <span className="p-title-small">{deet.title}</span>
+                                                    <button className="info-trigger" onClick={(e) => { e.stopPropagation(); setShowInfo(key); }}>i</button>
+                                                </div>
+                                                <div className="pillar-body">
+                                                    <PillarProgressBar val={avg} color={deet.color} label={`${avgRange === '7d' ? '7D' : '30D'} Average`} />
+                                                </div>
                                             </div>
-                                            <div className="pillar-body">
-                                                <MiniPillarBarChart history={history} attr={key === 'stress' ? 'stress' : (key === 'cognitive' ? 'cognitive' : key)} color={deet.color} />
-                                                <div className="pillar-val-mini" style={{ color: deet.color }}>{val}</div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                                        );
+                                    })}
+                                </div>
                         </div>
                     </div>
                 </section>
@@ -258,7 +232,6 @@ export default function Home() {
             <Modal show={!!showInfo} onHide={() => setShowInfo(null)} centered contentClassName="professional-modal">
                 <Modal.Body>
                     <div className="prof-modal-header">
-                        <span className="prof-modal-emoji">{showInfo && METRIC_DEETS[showInfo].icon}</span>
                         <h3>{showInfo && METRIC_DEETS[showInfo].title}</h3>
                     </div>
                     <div className="prof-modal-content">

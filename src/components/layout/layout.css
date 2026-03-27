@@ -84,6 +84,8 @@
     transition: all .2s;
     text-decoration: none;
     letter-spacing: 0.1px;
+    text-align: center;
+    line-height: 1.2;
 }
 
 .nav-tab svg {

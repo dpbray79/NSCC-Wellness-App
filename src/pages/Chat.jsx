@@ -92,7 +92,7 @@ export default function Chat() {
 
             {/* Header Info */}
             <div className="chat-header-info">
-                <h2 className="section-head">Wellness Companion</h2>
+                <h2 className="section-head">Wellness Chat</h2>
                 <p className="chat-disclaimer">
                     This is an AI supportive space, not a medical professional. If you are in crisis, please use the Support tab.
                 </p>

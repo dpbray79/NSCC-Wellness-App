@@ -24,9 +24,10 @@
 
 .r-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .r-icon {
@@ -42,7 +43,6 @@
 }
 
 .r-badge {
-    margin-left: auto;
     font-size: 10px;
     font-weight: 700;
     color: #fff;
@@ -79,6 +79,7 @@
     transition: all .2s;
     border: none;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .r-btn.primary {

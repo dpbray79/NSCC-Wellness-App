@@ -174,13 +174,17 @@ export default function Home() {
             <main className="dashboard-grid">
                 {/* Grid Item: Priority Action */}
                 <section className="grid-item priority-action">
-                    <div className="item-inner">
-                        <div className="card-label-mini">Action Required</div>
-                        <h3>Journal Check-In</h3>
-                        <p>Contribute to your wellness baseline with a 2-minute centering exercise.</p>
-                        <button className="btn btn-primary btn-sm btn-full" onClick={() => navigate('/checkin')}>
-                            Start Check-In &nbsp; →
-                        </button>
+                    <div className="item-inner" style={{ padding: '16px 24px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                                <div className="card-label-mini" style={{ marginBottom: '2px' }}>Action Required</div>
+                                <h3 style={{ margin: 0, fontSize: '18px' }}>Journal Check-In</h3>
+                            </div>
+                            <button className="btn btn-primary btn-sm" onClick={() => navigate('/checkin')} style={{ padding: '6px 16px', fontSize: '11px', minWidth: 'fit-content' }}>
+                                Start Check-In &nbsp; →
+                            </button>
+                        </div>
+                        <p style={{ marginTop: '8px', marginBottom: 0, fontSize: '13px' }}>Contribute to your wellness baseline with a 2-minute centering exercise.</p>
                     </div>
                 </section>
 

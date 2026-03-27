@@ -111,12 +111,14 @@ export default function Resources() {
                 {/* Urgent Crisis */}
                 <div className="res-card urgent">
                     <div className="r-header">
-                        <h3>Urgent Crisis Support</h3>
-                        <span className="r-badge">24/7</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <h3>Urgent Crisis Support</h3>
+                            <span className="r-badge">24/7</span>
+                        </div>
+                        <a href="tel:988" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Call 988 &nbsp; →</a>
                     </div>
                     <p>If you or someone else is in immediate danger of experiencing a mental health emergency, please reach out immediately.</p>
                     <div className="r-links">
-                        <a href="tel:988" className="r-btn primary">Call 988 (Suicide Crisis Helpline)</a>
                         <a href="tel:18884298167" className="r-btn primary">Call NS Mental Health Crisis Line</a>
                         <a href="https://good2talk.ca/novascotia/" target="_blank" rel="noreferrer" className="r-btn outline">Good2Talk Nova Scotia</a>
                     </div>
@@ -126,6 +128,7 @@ export default function Resources() {
                 <div className="res-card">
                     <div className="r-header">
                         <h3>NSCC Advising & Counselling</h3>
+                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Book Appointment &nbsp; →</button>
                     </div>
                     <p>Book a free, confidential session with an NSCC counsellor to discuss personal, academic, or career challenges.</p>
                     {campusResources?.counselling && (
@@ -134,7 +137,6 @@ export default function Resources() {
                         </div>
                     )}
                     <div className="r-links">
-                        <button className="r-btn primary">Book an Appointment</button>
                         <button className="r-btn outline">Learn about Student Services</button>
                     </div>
                 </div>
@@ -143,6 +145,7 @@ export default function Resources() {
                 <div className="res-card">
                     <div className="r-header">
                         <h3>Food Security</h3>
+                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</button>
                     </div>
                     <p>Access emergency food support, campus food banks, and community nutrition resources.</p>
                     {campusResources?.food_bank && (
@@ -151,7 +154,6 @@ export default function Resources() {
                         </div>
                     )}
                     <div className="r-links">
-                        <button className="r-btn primary">Find Campus Food Bank</button>
                         <button className="r-btn outline">Feed Nova Scotia Locator</button>
                     </div>
                 </div>

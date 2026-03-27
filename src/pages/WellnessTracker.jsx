@@ -97,12 +97,22 @@ export default function WellnessTracker() {
 
     return (
         <>
-            <div>
-                <h2 className="section-head">How are you today?</h2>
-                <p className="section-sub">Take a moment. Be honest with yourself — this is just for you.</p>
+            {/* Journal - PRIORITIZED at the top */}
+            <div className="card" style={{ borderLeft: '4px solid var(--nscc-blue)', marginBottom: '24px' }}>
+                <div className="card-label" style={{ color: 'var(--nscc-blue)', fontWeight: 800 }}>Daily Reflection</div>
+                <h3 style={{ fontSize: '18px', marginBottom: '8px', color: 'var(--bark)', fontWeight: 700 }}>What is on your mind today?</h3>
+                <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '16px', lineHeight: 1.5 }}>Take a moment to center yourself. There are no right or wrong answers here.</p>
+                <textarea className="journal-field"
+                    placeholder="Take a deep breath and start typing..."
+                    style={{ minHeight: '140px', fontSize: '15px' }}
+                    value={journal}
+                    onChange={(e) => setJournal(e.target.value)}
+                ></textarea>
+                <div className="journal-note">🔒 This entry is end-to-end encrypted and visible only to you.</div>
             </div>
 
             <div className="card">
+                <div className="card-label">Check-in Sliders</div>
                 <form className="pillar-checkin" onSubmit={handleSubmit}>
 
                     {/* Sleep */}
@@ -110,11 +120,11 @@ export default function WellnessTracker() {
                         <div className="p-row-head">
                             <span className="p-emoji">🌙</span>
                             <span className="p-name">Sleep Quality</span>
-                            <span className="p-num" style={{ color: 'var(--sage)' }}>{sleep}</span>
+                            <span className="p-num" style={{ color: 'var(--nscc-blue)' }}>{sleep}</span>
                         </div>
                         <p className="p-row-hint">How rested do you feel after last night?</p>
                         <input type="range" className="p-slider" min="0" max="10" value={sleep}
-                            style={{ background: getGradient(sleep, 'var(--sage)'), color: 'var(--sage)' }}
+                            style={{ background: getGradient(sleep, 'var(--nscc-blue)'), color: 'var(--nscc-blue)' }}
                             onChange={(e) => setSleep(Number(e.target.value))} />
                     </div>
 
@@ -162,11 +172,11 @@ export default function WellnessTracker() {
                         <div className="p-row-head">
                             <span className="p-emoji">🍃</span>
                             <span className="p-name">Food Security</span>
-                            <span className="p-num" style={{ color: 'var(--moss)' }}>{food}</span>
+                            <span className="p-num" style={{ color: 'var(--nscc-teal)' }}>{food}</span>
                         </div>
-                        <p className="p-row-hint">How confident are you in accessing nourishing food today?</p>
+                        <p className="p-row-hint">Confidence in accessing nourishing food today?</p>
                         <input type="range" className="p-slider" min="0" max="10" value={food}
-                            style={{ background: getGradient(food, 'var(--moss)'), color: 'var(--moss)' }}
+                            style={{ background: getGradient(food, 'var(--nscc-teal)'), color: 'var(--nscc-teal)' }}
                             onChange={(e) => setFood(Number(e.target.value))} />
                     </div>
 
@@ -174,7 +184,7 @@ export default function WellnessTracker() {
                     <div style={{ marginTop: '22px', paddingTop: '18px', borderTop: '1px solid var(--parchment)' }}>
                         <div className="composite-bar-wrap">
                             <div className="composite-bar-head">
-                                <span>Composite Wellness</span>
+                                <span>Overall Wellbeing Index</span>
                                 <span style={{ color: compColor }}>{compRounded.toFixed(1)}</span>
                             </div>
                             <div className="composite-track">
@@ -189,23 +199,12 @@ export default function WellnessTracker() {
                 </form>
             </div>
 
-            {/* Journal */}
-            <div className="card">
-                <div className="card-label">A moment to reflect — optional</div>
-                <textarea className="journal-field"
-                    placeholder="What's on your mind today? There's no right answer..."
-                    value={journal}
-                    onChange={(e) => setJournal(e.target.value)}
-                ></textarea>
-                <div className="journal-note">This entry is encrypted. Only you can ever read it.</div>
-            </div>
-
             {/* CTA */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <button className="btn btn-primary btn-full" onClick={handleSubmit} disabled={isSaving}>
-                    {isSaving ? "Saving..." : "Save today's check-in \u00A0→"}
+                <button className="btn btn-primary btn-full" onClick={handleSubmit} disabled={isSaving} style={{ background: 'var(--nscc-blue)' }}>
+                    {isSaving ? "Saving..." : "Confirm & Save Check-in \u00A0→"}
                 </button>
-                <button className="btn btn-ghost btn-full btn-sm" disabled={isSaving}>
+                <button className="btn btn-ghost btn-full btn-sm" disabled={isSaving} onClick={() => navigate('/')}>
                     Maybe later
                 </button>
             </div>

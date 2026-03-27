@@ -134,7 +134,8 @@
 }
 
 .journal-field:focus {
-    border-color: var(--sage);
+    border-color: var(--nscc-teal);
+    box-shadow: 0 0 0 3px rgba(0, 140, 166, 0.12);
 }
 
 .journal-field::placeholder {

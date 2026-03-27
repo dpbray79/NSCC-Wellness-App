@@ -96,33 +96,10 @@
     flex-direction: column;
 }
 
-/* Grid Positioning */
+/* Grid Positioning - Locked Stack for institutional clarity */
 .priority-action { grid-column: span 12; }
-.trend-view      { grid-column: span 12; }
 .pillars-view    { grid-column: span 12; }
-
-/* Desktop re-flow (3-tier adaptive) */
-@media (min-width: 600px) and (max-width: 1024px) {
-    .priority-action { grid-column: span 12; }
-    .pillars-view    { grid-column: span 12; }
-    .trend-view      { grid-column: span 12; }
-    
-    /* On tablet, force exactly 2-column grid for pillars */
-    .pillars-b2b-grid {
-        grid-template-columns: 1fr 1fr !important;
-    }
-}
-
-@media (min-width: 1025px) {
-    .priority-action { grid-column: span 4; }
-    .pillars-view    { grid-column: span 8; }
-    .trend-view      { grid-column: span 12; }
-    
-    /* On desktop, use 3 columns for pillars */
-    .pillars-b2b-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
+.trend-view      { grid-column: span 12; }
 
 /* ─── Component Styles ──────────────────────────────────────────────────── */
 .card-label-mini {
@@ -158,11 +135,17 @@
     margin-bottom: 8px;
 }
 
-/* Pillars Grid (nested) */
+/* Pillars Grid (nested 2x2 symmetry) */
 .pillars-b2b-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 500px) {
+    .pillars-b2b-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 650px) {
@@ -216,19 +199,37 @@
     color: var(--nscc-blue);
 }
 
-.pillar-body {
+/* Pillars Layout (Radar + Grid) */
+.pillars-layout-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
+.radar-container {
+    flex: 0 0 180px;
+    padding: 10px;
+}
+
+.radar-chart-wrap {
     display: flex;
     justify-content: center;
 }
 
-.wide-box {
-    grid-column: span 1;
+.radar-chart-wrap text {
+    font-family: 'Lora', serif;
+    letter-spacing: 0.5px;
 }
 
-@media (min-width: 600px) {
-    .wide-box { grid-column: span 2; }
+@media (max-width: 850px) {
+    .pillars-layout-flex {
+        flex-direction: column;
+    }
 }
-/* Progression Trend */
+
+/* Progression Trend Updates */
 .progression-chart-wrap {
     margin-top: 12px;
     min-height: 140px;
@@ -243,14 +244,22 @@
 .chart-labels {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 0 40px;
+    padding: 0 10px;
     font-size: 10px;
     font-weight: 700;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-top: 8px;
+    margin-top: 12px;
+}
+
+.chart-label-info {
+    color: var(--nscc-blue);
+    background: rgba(0, 71, 128, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
 }
 
 /* ─── Professional Modal ───────────────────────────────────────────────── */

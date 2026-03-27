@@ -20,7 +20,7 @@ const MSGS = [
     "You're at your best — savour this and share it."
 ];
 
-import { apiClient } from '../apiClient';
+import { supabase } from '../supabaseClient';
 import { encryptJournal } from '../utils/encryption';
 
 export default function WellnessTracker() {
@@ -33,7 +33,6 @@ export default function WellnessTracker() {
     const [composite, setComposite] = useState(6.2);
     const [submitted, setSubmitted] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-    const [insight, setInsight] = useState("");
 
     useEffect(() => {
         // Composite Calculation (Stress is inverted)
@@ -60,19 +59,17 @@ export default function WellnessTracker() {
             journal: finalJournalContent
         };
 
-        try {
-            // Save to Azure Database via API
-            await apiClient.post('/api/checkins', entry);
-            
-            // Get AI Insights via Azure Function
-            const insightData = await apiClient.post('/api/wellness-insights', { wellnessData: entry });
-            setInsight(insightData.insight);
-            
+        // Insert into Supabase
+        const { error } = await supabase
+            .from('checkins')
+            .insert([entry]);
+
+        if (error) {
+            console.error("Error saving entry:", error);
+            alert("There was an error saving your entry. Please try again.");
+            setIsSaving(false);
+        } else {
             setSubmitted(true);
-        } catch (err) {
-            console.error("Error in Azure migration save:", err);
-            alert("There was an error saving your entry or getting AI insights. Check your Azure Function logs.");
-        } finally {
             setIsSaving(false);
         }
     };
@@ -85,32 +82,14 @@ export default function WellnessTracker() {
 
     if (submitted) {
         return (
-            <div className="success-state" style={{ display: 'flex', animation: 'fadeUp .5s ease both', padding: '40px 20px' }}>
+            <div className="success-state" style={{ display: 'flex', animation: 'fadeUp .5s ease both' }}>
                 <div className="success-icon" style={{ fontSize: '56px' }}>🌿</div>
                 <h3 style={{ fontFamily: "'Lora', serif", fontSize: '22px', fontWeight: 600, color: 'var(--sage)' }}>Check-in saved.</h3>
-                
-                {insight && (
-                    <div className="ai-insight-box" style={{ 
-                        background: 'var(--warm-white)', 
-                        padding: '16px', 
-                        borderRadius: '12px', 
-                        margin: '20px 0',
-                        border: '1px solid var(--sage)',
-                        fontSize: '14px',
-                        lineHeight: 1.6,
-                        color: 'var(--bark)',
-                        textAlign: 'left'
-                    }}>
-                        <div style={{ fontWeight: 800, color: 'var(--sage)', marginBottom: '4px', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '1px' }}>Personal Insight</div>
-                        {insight}
-                    </div>
-                )}
-
-                <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6, maxWidth: '280px', margin: '0 auto 20px' }}>
+                <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6, maxWidth: '260px', margin: '0 auto 16px' }}>
                     Thank you for taking that moment for yourself. It matters more than you know.
                 </p>
-                <button className="btn btn-primary" onClick={() => window.location.hash = '/'}>
-                    Back to dashboard
+                <button className="btn btn-primary" onClick={() => setSubmitted(false)}>
+                    Back to home
                 </button>
             </div>
         );

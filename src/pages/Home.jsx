@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../apiClient';
+import { supabase } from '../supabaseClient';
 import { Modal } from 'react-bootstrap';
 import './home.css';
 
@@ -60,14 +60,10 @@ export default function Home() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const data = await apiClient.get('/api/checkins');
-                if (data) {
-                    setHistory(data);
-                    if (data.length > 0) setMetrics(data[data.length - 1]);
-                }
-            } catch (err) {
-                console.error("Error fetching history from Azure:", err);
+            const { data, error } = await supabase.from('checkins').select('*').order('created_at', { ascending: true }).limit(10);
+            if (data && !error) {
+                setHistory(data);
+                if (data.length > 0) setMetrics(data[data.length - 1]);
             }
             setLoading(false);
         };

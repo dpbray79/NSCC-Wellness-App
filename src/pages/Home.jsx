@@ -15,6 +15,33 @@ const METRIC_DEETS = {
         calc: "Sense of connection to the NSCC community.", why: "Key predictor of retention and wellbeing." }
 };
 
+const MiniPillarBarChart = ({ history, attr, color }) => {
+    if (!history || history.length === 0) return null;
+    const last7 = history.slice(-7);
+    const maxVal = 10;
+    const barWidth = 6;
+    const gap = 4;
+    const height = 30;
+    const width = (barWidth + gap) * 7 - gap;
+
+    return (
+        <div className="mini-bar-wrap">
+            <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+                {last7.map((d, i) => {
+                    const h = (d[attr] / maxVal) * height;
+                    const x = i * (barWidth + gap);
+                    const y = height - h;
+                    const isLatest = i === last7.length - 1;
+                    return (
+                        <rect key={i} x={x} y={y} width={barWidth} height={h} fill={isLatest ? color : 'var(--parchment)'} rx="2" 
+                              style={{ opacity: isLatest ? 1 : 0.4 + (i * 0.08) }} />
+                    );
+                })}
+            </svg>
+        </div>
+    );
+};
+
 const HolisticRadarChart = ({ metrics }) => {
     const size = 180;
     const center = size / 2;
@@ -206,14 +233,8 @@ export default function Home() {
                                                 <button className="info-trigger" onClick={(e) => { e.stopPropagation(); setShowInfo(key); }}>i</button>
                                             </div>
                                             <div className="pillar-body">
-                                                <div className="arc-mini">
-                                                    <svg width="60" height="38" viewBox="0 0 80 50">
-                                                        <path d="M 8 48 A 36 36 0 0 1 72 48" fill="none" stroke="var(--parchment)" strokeWidth="8" strokeLinecap="round" />
-                                                        <path className="arc-animated" d="M 8 48 A 36 36 0 0 1 72 48" fill="none" stroke={deet.color} strokeWidth="8" strokeLinecap="round"
-                                                            strokeDasharray="113" strokeDashoffset={offset} />
-                                                    </svg>
-                                                    <div className="arc-val-mini" style={{ color: deet.color }}>{val}</div>
-                                                </div>
+                                                <MiniPillarBarChart history={history} attr={key === 'stress' ? 'stress' : (key === 'cognitive' ? 'cognitive' : key)} color={deet.color} />
+                                                <div className="pillar-val-mini" style={{ color: deet.color }}>{val}</div>
                                             </div>
                                         </div>
                                     );

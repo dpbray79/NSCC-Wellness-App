@@ -7,7 +7,7 @@ export default function CrisisButton() {
     return (
         <button
             className="fab-crisis"
-            onClick={() => navigate('/resources')}
+            onClick={() => window.open('https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Urgent-Aid.aspx', '_blank')}
             aria-label="Crisis Support"
             title="Get immediate crisis support"
         >

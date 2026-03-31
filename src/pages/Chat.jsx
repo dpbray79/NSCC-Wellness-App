@@ -23,7 +23,7 @@ export default function Chat() {
     }, [messages, isTyping]);
 
     useEffect(() => {
-        // Fetch their most recent check-in so the AI understands their current context
+        // Fetch their most recent Journal Check-In so the AI understands their current context
         const fetchLatestCheckin = async () => {
             const { data } = await supabase
                 .from('checkins')
@@ -92,7 +92,7 @@ export default function Chat() {
 
             {/* Header Info */}
             <div className="chat-header-info">
-                <h2 className="section-head">Wellness Companion</h2>
+                <h2 className="section-head">Wellness Chat</h2>
                 <p className="chat-disclaimer">
                     This is an AI supportive space, not a medical professional. If you are in crisis, please use the Support tab.
                 </p>
@@ -102,7 +102,13 @@ export default function Chat() {
             <div className="messages-area">
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`message-bubble ${msg.role}`}>
-                        {msg.role === 'assistant' && <div className="bot-avatar">🌿</div>}
+                        {msg.role === 'assistant' && (
+                            <div className="bot-avatar-svg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nscc-blue)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zM12 8v4M12 16h.01"/>
+                                </svg>
+                            </div>
+                        )}
                         <div className={`msg-content ${msg.role === 'assistant' ? 'bot-bubble' : 'user-bubble'}`}>
                             {msg.content}
                         </div>
@@ -110,7 +116,11 @@ export default function Chat() {
                 ))}
                 {isTyping && (
                     <div className="message-bubble assistant">
-                        <div className="bot-avatar">🌿</div>
+                        <div className="bot-avatar-svg">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nscc-blue)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zM12 8v4M12 16h.01"/>
+                            </svg>
+                        </div>
                         <div className="msg-content bot-bubble" style={{ fontStyle: 'italic', color: 'var(--muted)' }}>typing...</div>
                     </div>
                 )}

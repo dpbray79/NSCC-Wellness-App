@@ -3,75 +3,77 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 20px 20px 4px;
-}
-
-.logo-mark {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    background: var(--sage);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Lora', serif;
-    font-weight: 700;
-    font-size: 17px;
-    color: #fff;
-    flex-shrink: 0;
+    padding: 10px 20px 8px;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--parchment);
 }
 
 .logo-text {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wellness-header-logo {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+    margin-right: 2px;
 }
 
 .logo-text h1 {
-    font-family: 'Lora', serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 15px;
-    font-weight: 700;
-    color: var(--bark);
+    font-weight: 800;
+    color: var(--nscc-blue);
     line-height: 1.2;
     margin: 0;
+    letter-spacing: -0.2px;
 }
 
 .logo-text p {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     margin-top: 1px;
     margin-bottom: 0;
+    letter-spacing: 0.2px;
 }
 
-.avatar {
-    width: 36px;
-    height: 36px;
+.avatar-ring {
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    background: var(--parchment);
-    border: 2px solid var(--soft);
+    background: var(--sage-lt);
+    border: 2px solid var(--nscc-teal);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
+    transition: transform 0.2s;
 }
+.avatar-ring:hover { transform: scale(1.08); }
 
 /* ─── Nav tabs ───────────────────────────────────────────────────────────── */
 .nav-tabs {
     display: flex;
     gap: 0;
-    margin: 0 20px 20px;
+    margin: 0 16px 16px;
     background: var(--parchment);
-    border-radius: var(--r-xl);
+    border-radius: 16px;
     padding: 4px;
+    margin-top: 8px;
 }
 
 .nav-tab {
     flex: 1;
     border: none;
     background: transparent;
-    padding: 9px 6px;
-    border-radius: var(--r-xl);
+    padding: 6px 4px;
+    border-radius: 12px;
     font-family: 'Nunito', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--muted);
     cursor: pointer;
@@ -79,112 +81,86 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    transition: all .25s;
+    transition: all .2s;
     text-decoration: none;
+    letter-spacing: 0.1px;
 }
 
-.nav-tab .tab-icon {
-    font-size: 17px;
+.nav-tab svg {
+    transition: all .2s;
+    color: var(--muted);
 }
 
 .nav-tab.active {
-    background: #fff;
-    color: var(--sage);
-    box-shadow: var(--shadow-sm);
+    background: var(--nscc-blue);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(0, 71, 128, 0.35);
 }
 
-/* ─── Support footer ─────────────────────────────────────────────────────── */
-.support-footer {
+.nav-tab.active svg {
+    color: #fff;
+}
+
+.nav-tab:not(.active):hover {
+    background: rgba(0, 71, 128, 0.08);
+    color: var(--nscc-blue);
+}
+
+/* ─── Crisis FAB button ──────────────────────────────────────────────────── */
+.fab-crisis {
     position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
-    padding: 12px 20px 20px;
-    background: linear-gradient(to top, var(--cream) 70%, transparent);
-    z-index: 100;
-}
-
-.support-bar {
-    background: var(--warm-white);
-    border-radius: var(--r-xl);
-    padding: 10px 14px;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid rgba(255, 255, 255, .9);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.support-label {
-    font-size: 10px;
-    color: var(--muted);
-    font-weight: 700;
-    letter-spacing: .8px;
-    text-transform: uppercase;
-    flex-shrink: 0;
-}
-
-.support-divider {
-    width: 1px;
-    height: 28px;
-    background: var(--soft);
-    flex-shrink: 0;
-}
-
-.support-links {
-    display: flex;
-    gap: 6px;
-    flex: 1;
-    justify-content: space-between;
-}
-
-.sup-btn {
-    flex: 1;
+    bottom: 24px;
+    right: calc(50% - 240px + 16px); /* align to right edge of shell */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    border: none;
-    background: transparent;
+    gap: 3px;
+    background: var(--warm-white);
+    border: 2px solid var(--danger);
+    border-radius: 18px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 20px rgba(197, 48, 48, 0.25);
     cursor: pointer;
-    padding: 4px 6px;
-    border-radius: 12px;
-    transition: background .15s;
-    text-decoration: none;
+    z-index: 200;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fabPulse 3s ease-in-out infinite;
 }
 
-.sup-btn:hover {
-    background: var(--parchment);
+.fab-crisis:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 28px rgba(197, 48, 48, 0.35);
 }
 
-.sup-btn .s-icon {
-    font-size: 18px;
-}
-
-.sup-btn .s-label {
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--muted);
-    letter-spacing: .3px;
-    text-align: center;
-    line-height: 1.2;
-}
-
-.sup-btn.crisis .s-icon {
+.fab-crisis .fab-icon {
     font-size: 20px;
+    line-height: 1;
 }
 
-.sup-btn.crisis .s-label {
+.fab-crisis .fab-label {
+    font-size: 9px;
+    font-weight: 800;
     color: var(--danger);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
+
+@keyframes fabPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(197, 48, 48, 0.25); }
+    50% { box-shadow: 0 4px 24px rgba(197, 48, 48, 0.45); }
+}
+
+/* Responsive: on very narrow screens anchor to the right of viewport */
+@media (max-width: 520px) {
+    .fab-crisis {
+        right: 16px;
+    }
+}
+
 
 /* ─── Views (screen switching) ───────────────────────────────────────────── */
 .view-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 4px 20px 8px;
-    animation: fadeUp .4s ease both;
+    display: block;
+    width: 100%;
+    padding: 4px 0 20px;
+    animation: fadeUp .35s ease both;
 }

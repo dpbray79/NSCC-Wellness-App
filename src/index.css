@@ -1,34 +1,38 @@
 /* ─── Tokens ────────────────────────────────────────────────────────────── */
 :root {
-  --cream:   #FAF6F0;
-  --parchment: #F2EBE0;
-  --warm-white: #FFFCF8;
-  --bark:    #5C4A32;
-  --muted:   #9B8B78;
-  --soft:    #C9BAA8;
+  --cream:   #F8F9FB; /* Cleaner grey-blue tint */
+  --parchment: #EDF2F7;
+  --warm-white: #FFFFFF;
+  --bark:    #1A365D; /* Deep NSCC-inspired blue */
+  --muted:   #4A5568;
+  --soft:    #CBD5E0;
 
-  --sage:    #4E7C6A;
-  --sage-lt: #EBF4F0;
-  --terra:   #B5674A;
-  --terra-lt:#FAF0EB;
-  --slate:   #5C6FA0;
-  --slate-lt:#EFF1F9;
-  --amber:   #B07C3C;
-  --amber-lt:#FBF4E8;
-  --moss:    #6A8C5A;
-  --moss-lt: #EEF4EA;
+  --nscc-blue: #004780;
+  --nscc-teal: #008CA6;
+  --nscc-accent: #00A3C4;
+  
+  --sage:    var(--nscc-blue);
+  --sage-lt: #EBF8FF;
+  --terra:   #E53E3E; /* Refined red */
+  --terra-lt:#FFF5F5;
+  --slate:   #2B6CB0;
+  --slate-lt:#EBF4FF;
+  --amber:   #D69E2E;
+  --amber-lt:#FEF6E7;
+  --moss:    var(--nscc-teal);
+  --moss-lt: #E6FFFA;
 
-  --danger:  #C0392B;
-  --danger-lt:#FEF0EE;
+  --danger:  #C53030;
+  --danger-lt:#FFF5F5;
 
-  --shadow-sm: 0 2px 12px rgba(92,74,50,.07);
-  --shadow-md: 0 6px 28px rgba(92,74,50,.10);
-  --shadow-lg: 0 16px 48px rgba(92,74,50,.13);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 
-  --r-sm: 16px;
-  --r-md: 24px;
-  --r-lg: 32px;
-  --r-xl: 48px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 32px;
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────────── */
@@ -36,10 +40,12 @@
 html { font-size: 16px; }
 body {
   font-family: 'Nunito', system-ui, sans-serif;
-  background: var(--cream);
+  background: #E2E8F0; /* Slightly darker to make the shell pop */
   color: var(--bark);
   min-height: 100vh;
+  overflow-y: auto;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Subtle grain texture */
@@ -50,15 +56,23 @@ body::before {
   opacity: .4;
 }
 
-/* ─── Layout shell ───────────────────────────────────────────────────────── */
-.shell {
+.app-shell {
   position: relative; z-index: 1;
-  max-width: 480px;
+  max-width: 600px;
+  width: 100%;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 110px;
+  background: var(--cream);
+  box-shadow: 0 0 60px rgba(0,0,0,0.05);
+  overflow-y: visible;
+}
+
+@media (max-width: 600px) {
+  .app-shell {
+    box-shadow: none;
+  }
 }
 
 /* ─── Utilities ──────────────────────────────────────────────────────────── */
@@ -88,7 +102,7 @@ body::before {
 .btn-secondary { background: var(--parchment); color: var(--bark); }
 .btn-secondary:hover { background: var(--soft); }
 .btn-ghost     { background: transparent; color: var(--muted); border: 1.5px solid var(--soft); }
-.btn-full      { width: 100%; }
+.btn-full      { width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
 .btn-sm        { padding: 9px 18px; font-size: 12px; }
 
 /* ─── Floating orb decoration ────────────────────────────────────────────── */
@@ -102,4 +116,5 @@ body::before {
 /* ─── Animations ──────────────────────────────────────────────────────────── */
 @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 @keyframes drawArc { from { stroke-dashoffset: 251; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .arc-animated { animation: drawArc .8s cubic-bezier(.34,1.56,.64,1) both; }

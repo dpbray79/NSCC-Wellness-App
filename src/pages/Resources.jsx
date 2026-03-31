@@ -11,6 +11,7 @@ export default function Resources() {
 
     useEffect(() => {
         const fetchData = async () => {
+            // 1. Get latest Journal Check-In
             const { data: checkin } = await supabase
                 .from('checkins')
                 .select('*')
@@ -56,18 +57,30 @@ export default function Resources() {
     return (
         <>
             <div style={{ marginBottom: '15px' }}>
-                <h2 className="section-head">Support & Resources</h2>
+                <h2 className="section-head" style={{ color: 'var(--nscc-blue)' }}>Support & Resources</h2>
                 <p className="section-sub" style={{ marginTop: '4px' }}>You are not alone. There are people and places ready to help you navigate whatever you're facing.</p>
+                
+                {/* Primary App Link */}
+                <div className="card" style={{ marginTop: '20px', border: '1.5px solid var(--nscc-blue)', background: 'var(--sage-lt)', padding: '20px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div>
+                            <h3 style={{ fontSize: '15px', color: 'var(--nscc-blue)', margin: 0 }}>NSCC Student Wellness App</h3>
+                            <p style={{ fontSize: '12px', color: 'var(--muted)', margin: '2px 0 10px' }}>The official central tool for your student wellness journey.</p>
+                            <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub" target="_blank" rel="noreferrer" className="r-btn primary" style={{ display: 'inline-flex', padding: '8px 16px', fontSize: '12px' }}>
+                                Visit Student Wellness Hub ↗
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {wellnessData && (
                 <div className="res-card insight-card" style={{ marginBottom: '16px', background: 'linear-gradient(135deg, var(--parchment) 0%, #fff 100%)', border: '1.5px solid var(--sage-lt)' }}>
                     <div className="r-header">
-                        <span className="r-icon">💡</span>
                         <h3 style={{ color: 'var(--sage)' }}>Self-Care Insight</h3>
                     </div>
                     <p style={{ fontStyle: 'italic', fontSize: '14px', color: 'var(--bark)', marginBottom: 0 }}>
-                        {loadingInsight ? "Reflecting on your latest metrics..." : (insight || "Your well-being matters. Consider exploring these resources today.")}
+                        {loadingInsight ? "Analyzing your latest Journal Check-In..." : (insight || "Your well-being matters. Consider exploring these resources today.")}
                     </p>
                 </div>
             )}
@@ -92,9 +105,11 @@ export default function Resources() {
 
                 <div className="res-card urgent">
                     <div className="r-header">
-                        <span className="r-icon">🆘</span>
-                        <h3>Urgent Crisis Support</h3>
-                        <span className="r-badge">24/7</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <h3>Urgent Crisis Support</h3>
+                            <span className="r-badge">24/7</span>
+                        </div>
+                        <a href="tel:988" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Call 988 &nbsp; →</a>
                     </div>
                     <p>If you or someone else is in immediate danger, please reach out.</p>
                     <div className="r-links">
@@ -106,8 +121,8 @@ export default function Resources() {
 
                 <div className="res-card">
                     <div className="r-header">
-                        <span className="r-icon">🪴</span>
                         <h3>NSCC Advising & Counselling</h3>
+                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Book Appointment &nbsp; →</button>
                     </div>
                     <p>Book a confidential session with an NSCC counsellor.</p>
                     {campusResources?.counselling && (
@@ -123,8 +138,8 @@ export default function Resources() {
 
                 <div className="res-card">
                     <div className="r-header">
-                        <span className="r-icon">🍎</span>
                         <h3>Food Security</h3>
+                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</button>
                     </div>
                     <p>Access emergency food support and community nutrition resources.</p>
                     {campusResources?.food_bank && (
@@ -140,7 +155,6 @@ export default function Resources() {
 
                 <div className="res-card">
                     <div className="r-header">
-                        <span className="r-icon">🫂</span>
                         <h3>Peer & Community Support</h3>
                     </div>
                     <p>Connect with other students and community groups for shared experiences.</p>

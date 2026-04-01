@@ -5,7 +5,6 @@ import CrisisButton from './components/layout/CrisisButton';
 import Home from './pages/Home';
 import WellnessTracker from './pages/WellnessTracker';
 import Resources from './pages/Resources';
-import Chat from './pages/Chat';
 import Login from './pages/Login';
 
 function App() {
@@ -17,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/checkin" element={<WellnessTracker />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/resources" element={<Resources />} />
           <Route path="/resources" element={<Resources />} />
         </Routes>
       </div>

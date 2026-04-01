@@ -141,20 +141,15 @@ export default function Resources() {
                     </div>
                 </div>
 
-                {/* Food Security */}
+                {/* Addictions Services */}
                 <div className="res-card">
                     <div className="r-header">
-                        <h3>Food Security</h3>
-                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</button>
+                        <h3>Addictions Services</h3>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</a>
                     </div>
-                    <p>Access emergency food support, campus food banks, and community nutrition resources.</p>
-                    {campusResources?.food_bank && (
-                        <div style={{ background: 'var(--parchment)', padding: '10px', borderRadius: '8px', marginBottom: '15px', borderLeft: '3px solid var(--sage)', fontSize: '12px' }}>
-                            <strong>Campus Support:</strong> {campusResources.food_bank}
-                        </div>
-                    )}
+                    <p>Access resources for substance abuse, addictions recovery, and harm reduction support through NSCC and community partners.</p>
                     <div className="r-links">
-                        <button className="r-btn outline">Feed Nova Scotia Locator</button>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Substance Abuse Support</a>
                     </div>
                 </div>
 

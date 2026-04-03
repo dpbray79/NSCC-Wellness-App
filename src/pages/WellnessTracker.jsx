@@ -276,7 +276,7 @@ export default function WellnessTracker() {
             {/* Info Modal */}
             <Modal show={!!showInfo} onHide={() => setShowInfo(null)} centered contentClassName="professional-modal">
                 <Modal.Body style={{ padding: '24px' }}>
-                    <div className="prof-modal-header">
+                    <div className="prof-modal-header text-center">
                         <h3 style={{ margin: 0, fontWeight: 800, color: 'var(--nscc-blue)' }}>{showInfo && METRIC_DEETS[showInfo].title}</h3>
                     </div>
                     <div className="prof-modal-content" style={{ marginTop: '20px' }}>

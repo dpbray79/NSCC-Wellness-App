@@ -203,3 +203,22 @@
     color: var(--nscc-blue);
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+.info-trigger {
+    margin-left: 8px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--soft);
+    background: #fff;
+    color: var(--soft);
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.info-trigger:hover {
+    border-color: var(--nscc-blue);
+    color: var(--nscc-blue);
+}

@@ -198,7 +198,7 @@ export default function WellnessTracker() {
                             <input type="range" className="p-slider" min="0" max="10" step="0.5" value={stress} style={{ background: getGradient(stress, 'var(--terra)'), color: 'var(--terra)' }} onChange={(e) => setStress(Number(e.target.value))} />
                         </div>
                         <div className="p-row">
-                            <div className="p-row-head"><span className="p-name">Cognitive Energy</span><span className="p-num" style={{ color: 'var(--slate)' }}>{cog}</span></div>
+                            <div className="p-row-head"><span className="p-name">Cognitive Capacity</span><span className="p-num" style={{ color: 'var(--slate)' }}>{cog}</span></div>
                             <input type="range" className="p-slider" min="0" max="10" step="0.5" value={cog} style={{ background: getGradient(cog, 'var(--slate)'), color: 'var(--slate)' }} onChange={(e) => setCog(Number(e.target.value))} />
                         </div>
                         <div className="p-row">

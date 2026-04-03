@@ -16,10 +16,10 @@ The application tracks four key dimensions of wellness, chosen for their direct 
 - **Why**: Acknowledges that stress is inevitable but manageable. The goal is "balance", not zero stress.
 - **Cited Resource**: NSCC Student Health Plan (Advising & Counselling).
 
-### C. Cognitive Energy
-- **Wording**: "Cognitive Energy" (Internal label: BRAIN).
-- **Why**: Focuses on mental clarity and learning capacity.
-- **Rationale**: Helps students identify patterns where "brain fog" might coincide with poor sleep.
+### C. Cognitive Capacity
+- **Wording**: "Cognitive Capacity" (Internal label: BRAIN).
+- **Why**: Focuses on attention, memory, and the ability to manage tasks, which can be significantly reduced by stress and fatigue.
+- **Behavioral Indicators**: Ability to attend class, complete assignments, and engage socially.
 
 ### D. Social Belonging
 - **Wording**: "Social Belonging" instead of "Social Life".
@@ -38,4 +38,4 @@ The application tracks four key dimensions of wellness, chosen for their direct 
 - **External**:
     - **988 Crisis Line**: 24/7 National Emergency Support.
     - **Good2Talk NS**: Specialized post-secondary student support.
-    - **Addictions Services**: [NSCC Substance Abuse SharePoint](https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx).
+    - **Substance Use and Supports**: [NSCC Substance Abuse SharePoint](https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx).

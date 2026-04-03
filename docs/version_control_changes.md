@@ -8,7 +8,7 @@ This document tracks major layout transitions and feature set updates during the
 |-------|--------|-------------|
 | **Initial** | `main` (old) | Basic React/Vite scaffolding with Supabase connection. |
 | **Branding** | `main` | Integration of NSCC Student Wellness logo, color palette (NSCC Blue, Sage, Terra), and PWA support. |
-| **Simplified** | `features/simplified` | Removal of Chat functionality; redirection of Food Security to Addictions Services. |
+| **Simplified** | `features/simplified` | Removal of Chat functionality; redirection of Food Security to Substance Use and Supports. |
 
 ## 2. Layout Transitions
 
@@ -32,5 +32,5 @@ This document tracks major layout transitions and feature set updates during the
 - **Impact**: Ensures student privacy even at the database/administrator layer.
 
 ### Dynamic Resource Routing
-- **Update**: Replaced generic food security links with a targeted **Addictions Services** section.
+- **Update**: Replaced generic food security links with a targeted **Substance Use and Supports** section.
 - **Link**: [NSCC Substance Abuse Support (SharePoint)](https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx)

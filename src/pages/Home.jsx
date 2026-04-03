@@ -9,8 +9,8 @@ const METRIC_DEETS = {
         calc: "Average quality of rest over the selected period.", why: "Restorative sleep is crucial for cognitive function and emotional regulation." },
     stress: { title: "Stress Balance", color: "var(--terra)", 
         calc: "Resilience against daily pressures and academic load.", why: "Managing stress prevents burnout and improves long-term focus." },
-    cognitive: { title: "Cognitive Energy", color: "var(--slate)", 
-        calc: "Mental clarity and sharpness for learning.", why: "High cognitive energy correlates with better academic performance." },
+    cognitive: { title: "Cognitive Capacity", color: "var(--slate)", 
+        calc: "Ability to focus, manage tasks, and engage in learning.", why: "Students' cognitive capacity can be reduced by stress and fatigue, impacting class attendance and academic performance." },
     social: { title: "Social Belonging", color: "var(--amber)", 
         calc: "Sense of connection to the NSCC community.", why: "Key predictor of retention and wellbeing." }
 };

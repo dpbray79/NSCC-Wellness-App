@@ -136,40 +136,33 @@ export default function Resources() {
                     </div>
                 </div>
 
+                {/* Addictions Services */}
                 <div className="res-card">
                     <div className="r-header">
-                        <h3>Food Security</h3>
-                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</button>
+                        <h3>Addictions Services</h3>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</a>
                     </div>
-                    <p>Access emergency food support and community nutrition resources.</p>
-                    {campusResources?.food_bank && (
-                        <div style={{ background: 'var(--parchment)', padding: '10px', borderRadius: '8px', marginBottom: '15px', borderLeft: '3px solid var(--sage)', fontSize: '12px' }}>
-                            <strong>Campus Support:</strong> {campusResources.food_bank}
-                        </div>
-                    )}
+                    <p>Access resources for substance abuse, addictions recovery, and harm reduction support through NSCC and community partners.</p>
                     <div className="r-links">
-                        <a href="https://www.nsccstudentassociation.ca/food-bank" target="_blank" rel="noreferrer" className="r-btn primary" style={{ textDecoration: 'none', textAlign: 'center' }}>Find Campus Food Bank</a>
-                        <button className="r-btn outline">Feed Nova Scotia Locator</button>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Substance Abuse Support</a>
                     </div>
                 </div>
 
+                {/* Peer Support */}
                 <div className="res-card">
                     <div className="r-header">
                         <h3>Peer & Community Support</h3>
                     </div>
-                    <p>Connect with other students and community groups for shared experiences.</p>
+                    <p>Connect with other students, student union programs, and affinity groups for shared experiences.</p>
                     {campusResources?.peer_support && (
                         <div style={{ background: 'var(--parchment)', padding: '10px', borderRadius: '8px', marginBottom: '15px', borderLeft: '3px solid var(--sage)', fontSize: '12px' }}>
                             <strong>Student Association:</strong> {campusResources.peer_support}
                         </div>
                     )}
                     <div className="r-links">
-                        <a href="https://togetherall.com/en-ca/" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Student Association (SA)</a>
-                        <a href="https://translifeline.org/hotline/" target="_blank" rel="noreferrer" className="r-btn outline">2SLGBTQIA+ Resources</a>
-                        <a href="https://www.irsss.ca/irsss-services" target="_blank" rel="noreferrer" className="r-btn outline">Indigenous Student Supports</a>
-                        <a href="https://breakthesilencens.ca/find-help/where-to-get-help/" target="_blank" rel="noreferrer" className="r-btn outline">Sexual Violence Support</a>
-                        <a href="https://mha.nshealth.ca/en" target="_blank" rel="noreferrer" className="r-btn outline">NS Mental Health Hub</a>
-                        <a href="https://bethere.org/Home" target="_blank" rel="noreferrer" className="r-btn outline">Help Others (Be There)</a>
+                        <button className="r-btn outline">NSCC Student Association (SA)</button>
+                        <button className="r-btn outline">2SLGBTQIA+ Resources</button>
+                        <button className="r-btn outline">Indigenous Student Supports</button>
                     </div>
                 </div>
 

@@ -5,14 +5,34 @@ import { Modal } from 'react-bootstrap';
 import './home.css';
 
 const METRIC_DEETS = {
-    sleep: { title: "Sleep Quality", color: "var(--nscc-blue)", 
-        calc: "Average quality of rest over the selected period.", why: "Restorative sleep is crucial for cognitive function and emotional regulation." },
-    stress: { title: "Stress Balance", color: "var(--terra)", 
-        calc: "Resilience against daily pressures and academic load.", why: "Managing stress prevents burnout and improves long-term focus." },
-    cognitive: { title: "Cognitive Capacity", color: "var(--slate)", 
-        calc: "Ability to focus, manage tasks, and engage in learning.", why: "Students' cognitive capacity can be reduced by stress and fatigue, impacting class attendance and academic performance." },
-    social: { title: "Social Belonging", color: "var(--amber)", 
-        calc: "Sense of connection to the NSCC community.", why: "Key predictor of retention and wellbeing." }
+    sleep: { 
+        title: "Sleep Quality", 
+        color: "var(--nscc-blue)", 
+        source: "Research indicates that perceived sleep quality is often more predictive of cognitive function and overall health than duration alone.",
+        metric: "Measured on a 0-10 scale of restorative rest vs. fatigue.",
+        why: "Restorative sleep is crucial for cognitive function, emotional regulation, and long-term academic persistence." 
+    },
+    stress: { 
+        title: "Stress Balance", 
+        color: "var(--terra)", 
+        source: "NSCC Advising & Counselling; managing stress prevents burnout and improves persistence.",
+        metric: "Measured on a 0-10 scale of resilience vs. academic and daily load.",
+        why: "Maintaining stress balance prevents burnout and improves long-term focus and engagement." 
+    },
+    cognitive: { 
+        title: "Cognitive Capacity", 
+        color: "var(--slate)", 
+        source: "Students’ cognitive capacity (attention, memory, and ability to manage tasks) can be significantly reduced by stress, mental health challenges, and fatigue.",
+        metric: "Measured on a 0-10 scale of ability to attend class, complete assignments, and engage socially.",
+        why: "Directly impacts academic performance and the ability to maintain a consistent learning schedule." 
+    },
+    social: { 
+        title: "Social Belonging", 
+        color: "var(--amber)", 
+        source: "NSCC Student Association; belonging is a primary predictor of student retention and mental health.",
+        metric: "Measured on a 0-10 scale of connection to the NSCC community and peer groups.",
+        why: "Key predictor of student retention and overall psychological wellbeing." 
+    }
 };
 
 const PillarProgressBar = ({ val, color, label }) => (
@@ -239,12 +259,14 @@ export default function Home() {
                         <h3>{showInfo && METRIC_DEETS[showInfo].title}</h3>
                     </div>
                     <div className="prof-modal-content">
-                        <label>Calculation Methodology</label>
-                        <p>{showInfo && METRIC_DEETS[showInfo].calc}</p>
-                        <label>Institutional Importance</label>
+                        <label>Quantitative Metric</label>
+                        <p>{showInfo && METRIC_DEETS[showInfo].metric}</p>
+                        <label>Research Rationale</label>
                         <p>{showInfo && METRIC_DEETS[showInfo].why}</p>
+                        <label>Sources & Evidence</label>
+                        <p style={{ fontSize: '12px', color: 'var(--muted)', fontStyle: 'italic' }}>{showInfo && METRIC_DEETS[showInfo].source}</p>
                     </div>
-                    <button className="btn btn-outline btn-full" onClick={() => setShowInfo(null)}>Close</button>
+                    <button className="btn btn-primary btn-full" onClick={() => setShowInfo(null)}>Close</button>
                 </Modal.Body>
             </Modal>
         </div>

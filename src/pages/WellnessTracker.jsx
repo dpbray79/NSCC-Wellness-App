@@ -2,7 +2,39 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { encryptJournal } from '../utils/encryption';
+import { Modal } from 'react-bootstrap';
 import './tracker.css';
+
+const METRIC_DEETS = {
+    sleep: { 
+        title: "Sleep Quality", 
+        color: "var(--nscc-blue)", 
+        source: "Research indicates that perceived sleep quality is often more predictive of cognitive function and overall health than duration alone.",
+        metric: "Measured on a 0-10 scale of restorative rest vs. fatigue.",
+        why: "Restorative sleep is crucial for cognitive function, emotional regulation, and long-term academic persistence." 
+    },
+    stress: { 
+        title: "Stress Balance", 
+        color: "var(--terra)", 
+        source: "NSCC Advising & Counselling; managing stress prevents burnout and improves persistence.",
+        metric: "Measured on a 0-10 scale of resilience vs. academic and daily load.",
+        why: "Maintaining stress balance prevents burnout and improves long-term focus and engagement." 
+    },
+    cognitive: { 
+        title: "Cognitive Capacity", 
+        color: "var(--slate)", 
+        source: "Students’ cognitive capacity (attention, memory, and ability to manage tasks) can be significantly reduced by stress, mental health challenges, and fatigue.",
+        metric: "Measured on a 0-10 scale of ability to attend class, complete assignments, and engage socially.",
+        why: "Directly impacts academic performance and the ability to maintain a consistent learning schedule." 
+    },
+    social: { 
+        title: "Social Belonging", 
+        color: "var(--amber)", 
+        source: "NSCC Student Association; belonging is a primary predictor of student retention and mental health.",
+        metric: "Measured on a 0-10 scale of connection to the NSCC community and peer groups.",
+        why: "Key predictor of student retention and overall psychological wellbeing." 
+    }
+};
 
 const HINTS = {
     val: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -113,6 +145,7 @@ export default function WellnessTracker() {
     const [composite, setComposite] = useState(6.5);
     const [submitted, setSubmitted] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [showInfo, setShowInfo] = useState(null);
 
     useEffect(() => {
         const score = ((sleep + stress + cog + social) / 4);
@@ -190,19 +223,35 @@ export default function WellnessTracker() {
                 <div className="checkin-content">
                     <div className="pillar-checkin">
                         <div className="p-row">
-                            <div className="p-row-head"><span className="p-name">Sleep Quality</span><span className="p-num" style={{ color: 'var(--nscc-blue)' }}>{sleep}</span></div>
+                            <div className="p-row-head">
+                                <span className="p-name">Sleep Quality</span>
+                                <button className="info-trigger" onClick={() => setShowInfo('sleep')}>i</button>
+                                <span className="p-num" style={{ color: 'var(--nscc-blue)' }}>{sleep}</span>
+                            </div>
                             <input type="range" className="p-slider" min="0" max="10" step="0.5" value={sleep} style={{ background: getGradient(sleep, 'var(--nscc-blue)'), color: 'var(--nscc-blue)' }} onChange={(e) => setSleep(Number(e.target.value))} />
                         </div>
                         <div className="p-row">
-                            <div className="p-row-head"><span className="p-name">Stress Balance</span><span className="p-num" style={{ color: 'var(--terra)' }}>{stress}</span></div>
+                            <div className="p-row-head">
+                                <span className="p-name">Stress Balance</span>
+                                <button className="info-trigger" onClick={() => setShowInfo('stress')}>i</button>
+                                <span className="p-num" style={{ color: 'var(--terra)' }}>{stress}</span>
+                            </div>
                             <input type="range" className="p-slider" min="0" max="10" step="0.5" value={stress} style={{ background: getGradient(stress, 'var(--terra)'), color: 'var(--terra)' }} onChange={(e) => setStress(Number(e.target.value))} />
                         </div>
                         <div className="p-row">
-                            <div className="p-row-head"><span className="p-name">Cognitive Capacity</span><span className="p-num" style={{ color: 'var(--slate)' }}>{cog}</span></div>
+                            <div className="p-row-head">
+                                <span className="p-name">Cognitive Capacity</span>
+                                <button className="info-trigger" onClick={() => setShowInfo('cognitive')}>i</button>
+                                <span className="p-num" style={{ color: 'var(--slate)' }}>{cog}</span>
+                            </div>
                             <input type="range" className="p-slider" min="0" max="10" step="0.5" value={cog} style={{ background: getGradient(cog, 'var(--slate)'), color: 'var(--slate)' }} onChange={(e) => setCog(Number(e.target.value))} />
                         </div>
                         <div className="p-row">
-                            <div className="p-row-head"><span className="p-name">Social Belonging</span><span className="p-num" style={{ color: 'var(--amber)' }}>{social}</span></div>
+                            <div className="p-row-head">
+                                <span className="p-name">Social Belonging</span>
+                                <button className="info-trigger" onClick={() => setShowInfo('social')}>i</button>
+                                <span className="p-num" style={{ color: 'var(--amber)' }}>{social}</span>
+                            </div>
                             <input type="range" className="p-slider" min="0" max="10" step="0.5" value={social} style={{ background: getGradient(social, 'var(--amber)'), color: 'var(--amber)' }} onChange={(e) => setSocial(Number(e.target.value))} />
                         </div>
                     </div>
@@ -223,6 +272,26 @@ export default function WellnessTracker() {
                 </button>
                 <button className="btn btn-ghost btn-full btn-sm" disabled={isSaving} onClick={() => navigate('/')}>Maybe later</button>
             </div>
+
+            {/* Info Modal */}
+            <Modal show={!!showInfo} onHide={() => setShowInfo(null)} centered contentClassName="professional-modal">
+                <Modal.Body style={{ padding: '24px' }}>
+                    <div className="prof-modal-header">
+                        <h3 style={{ margin: 0, fontWeight: 800, color: 'var(--nscc-blue)' }}>{showInfo && METRIC_DEETS[showInfo].title}</h3>
+                    </div>
+                    <div className="prof-modal-content" style={{ marginTop: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: 'var(--nscc-teal)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Quantitative Metric</label>
+                        <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--muted)', marginBottom: '20px' }}>{showInfo && METRIC_DEETS[showInfo].metric}</p>
+                        
+                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: 'var(--nscc-teal)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Research Rationale</label>
+                        <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--muted)', marginBottom: '20px' }}>{showInfo && METRIC_DEETS[showInfo].why}</p>
+                        
+                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: 'var(--nscc-teal)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sources & Evidence</label>
+                        <p style={{ fontSize: '12px', color: 'var(--muted)', fontStyle: 'italic', lineHeight: '1.5' }}>{showInfo && METRIC_DEETS[showInfo].source}</p>
+                    </div>
+                    <button className="btn btn-primary btn-full" style={{ marginTop: '10px' }} onClick={() => setShowInfo(null)}>Close</button>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 }

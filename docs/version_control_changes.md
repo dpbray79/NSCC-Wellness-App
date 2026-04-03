@@ -31,6 +31,9 @@ This document tracks major layout transitions and feature set updates during the
 - **Layer**: Integrated client-side AES-256-GCM encryption for journal entries before database insertion.
 - **Impact**: Ensures student privacy even at the database/administrator layer.
 
-### Dynamic Resource Routing
-- **Update**: Replaced generic food security links with a targeted **Substance Use and Supports** section.
 - **Link**: [NSCC Substance Abuse Support (SharePoint)](https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx)
+
+### Research & Info Overlays
+- **Update**: Integrated informational "i" icons across the Dashboard and Wellness Tracker.
+- **Functionality**: Overlays provide quantitative metric definitions, research-based rationale (academic impact), and institutional sources (NSCC Student Wellness Hub, Advising & Counselling).
+- **Impact**: Provides "just-in-time" education to students on *why* these pillars are measured and what the research suggests about their impact on student success.

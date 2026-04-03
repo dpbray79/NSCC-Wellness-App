@@ -1,0 +1,41 @@
+<h1 id="masterdataflowarchitecture">Master Data Flow &amp; Architecture</h1>
+<p>This document visualizes how data moves through the Student Wellness App from a user perspective.</p>
+<h2 id="1systemarchitecture">1. System Architecture</h2>
+<pre><code class="mermaid language-mermaid">graph TD
+    User((Student)) --&gt;|React App| UI[Vite Frontend]
+    UI --&gt;|Auth| MSAL[MSAL / Entra ID]
+    UI --&gt;|Data Entry| Supabase[Supabase PostgreSQL]
+    UI --&gt;|Fetch| Insights[Supabase Edge Functions]
+
+    subgraph "Data Processing"
+        Supabase --&gt;|Raw Data| Insights
+        Insights --&gt;|AI Analysis| UI
+    end
+
+    subgraph "Encryption"
+        UI --&gt;|AES-256-GCM| Crypto[Client-Side Encryption]
+        Crypto --&gt;|Ciphertext| Supabase
+    end
+</code></pre>
+<h2 id="2usercaseflowdailycheckin">2. User Case Flow (Daily Check-In)</h2>
+<ol>
+<li><strong>Authentication</strong>: Student logs in via NSCC Entra ID (handled by MSAL).</li>
+<li><strong>Home View</strong>: The app fetches the last 30 days of <code>checkins</code> to calculate the 7-day rolling "Overall Index".</li>
+<li><strong>Journal Entry</strong>: Student inputs reflections. <ul>
+<li><em>Processing</em>: The text is encrypted using a local key/IV before being sent to the server.</li></ul></li>
+<li><strong>Pillar Scaling</strong>: Student adjusts sliders (0-10) for the 4 Pillars.</li>
+<li><strong>Submission</strong>: Data is saved to the <code>checkins</code> table in Supabase.</li>
+<li><strong>Insights</strong>: The app invokes the <code>wellness-insights</code> Edge Function, which analyzes the metrics and provides a tailored self-care tip.</li>
+</ol>
+<h2 id="3resourcediscoveryflow">3. Resource Discovery Flow</h2>
+<ol>
+<li><strong>Navigate</strong>: User goes to "Support" page.</li>
+<li><strong>Campus Selection</strong>: User selects a campus (e.g., Ivany).</li>
+<li><strong>Lookup</strong>: App invokes <code>campus-resources</code> Edge Function.</li>
+<li><strong>Display</strong>: Tailored local office locations and contact details are displayed derived from the campus ID.</li>
+</ol>
+<h2 id="4progressivewebapppwalayer">4. Progressive Web App (PWA) Layer</h2>
+<ul>
+<li><strong>offline</strong>: Service worker caches core assets (<code>assets/</code>, <code>index.html</code>) using Workbox.</li>
+<li><strong>Install</strong>: Manifest provides branding and icon assets for Android/iOS home screen installation.</li>
+</ul>

@@ -1,0 +1,54 @@
+<h1 id="mastererddatadictionary">Master ERD &amp; Data Dictionary</h1>
+<p>This document specifies the database schema and data constraints for the Student Wellness App.</p>
+<h2 id="1entityrelationshipdiagramerd">1. Entity Relationship Diagram (ERD)</h2>
+<pre><code class="mermaid language-mermaid">erDiagram
+    checkins {
+        uuid id PK "Default: gen_random_uuid()"
+        timestamp created_at "Default: now()"
+        smallint sleep "0-10"
+        smallint stress "0-10"
+        smallint cognitive "0-10"
+        smallint social "0-10"
+        numeric composite "0.0-10.0"
+        text journal "Encrypted (AES-256-GCM)"
+    }
+</code></pre>
+<h2 id="2datadictionary">2. Data Dictionary</h2>
+<p>| Column | Data Type | Constraints | Description |
+|--------|-----------|-------------|-------------|
+| <code>id</code> | <code>uuid</code> | PRIMARY KEY | Unique identifier for the check-in. |
+| <code>created_at</code> | <code>timestamptz</code> | NOT NULL | Date and time (UTC) of submission. |
+| <code>sleep</code> | <code>smallint</code> | 0 &lt;= x &lt;= 10 | User-reported quality of sleep. |
+| <code>stress</code> | <code>smallint</code> | 0 &lt;= x &lt;= 10 | User-reported balance of stress. |
+| <code>cognitive</code> | <code>smallint</code> | 0 &lt;= x &lt;= 10 | User-reported mental energy/clarity. |
+| <code>social</code> | <code>smallint</code> | 0 &lt;= x &lt;= 10 | User-reported sense of belonging. |
+| <code>composite</code> | <code>numeric(3,1)</code> | 0.0 &lt;= x &lt;= 10.0 | Calculated average of the 4 pillars. |
+| <code>journal</code> | <code>text</code> | NULLABLE | Student's private reflection (Encrypted). |</p>
+<h2 id="3sqldefinition">3. SQL Definition</h2>
+<pre><code class="sql language-sql">-- Create the core checkins table
+create table checkins (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+
+  -- The 4 Pillars (Values 0-10)
+  sleep smallint not null check (sleep &gt;= 0 and sleep &lt;= 10),
+  stress smallint not null check (stress &gt;= 0 and stress &lt;= 10),
+  cognitive smallint not null check (cognitive &gt;= 0 and cognitive &lt;= 10),
+  social smallint not null check (social &gt;= 0 and social &lt;= 10),
+
+  -- The calculated composite score (0.0 to 10.0)
+  composite numeric(3,1) not null check (composite &gt;= 0.0 and composite &lt;= 10.0),
+
+  -- Encrypted journal
+  journal text
+);
+
+-- Enable Row Level Security (RLS)
+alter table checkins enable row level security;
+</code></pre>
+<h2 id="4securitypoliciesrls">4. Security Policies (RLS)</h2>
+<p>Currently, the app uses anonymous access for Phase 2 prototyping. Future teams must implement:</p>
+<ul>
+<li><strong><code>user_id</code></strong> column (linked to MSAL).</li>
+<li><strong>RLS Policy</strong>: <code>create policy "Users can see only their own data" on checkins for select using (auth.uid() = user_id);</code></li>
+</ul>

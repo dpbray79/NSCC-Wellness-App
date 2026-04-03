@@ -1,0 +1,36 @@
+<h1 id="versioncontrolchangedocumentnsccstudentwellnessapp">Version Control Change Document: NSCC Student Wellness App</h1>
+<p>This document tracks major layout transitions and feature set updates during the Phase 1 &amp; 2 development.</p>
+<h2 id="1projectevolutionsummary">1. Project Evolution Summary</h2>
+<p>| Phase | Branch | Key Changes |
+|-------|--------|-------------|
+| <strong>Initial</strong> | <code>main</code> (old) | Basic React/Vite scaffolding with Supabase connection. |
+| <strong>Branding</strong> | <code>main</code> | Integration of NSCC Student Wellness logo, color palette (NSCC Blue, Sage, Terra), and PWA support. |
+| <strong>Simplified</strong> | <code>features/simplified</code> | Removal of Chat functionality; redirection of Food Security to Addictions Services. |</p>
+<h2 id="2layouttransitions">2. Layout Transitions</h2>
+<h3 id="adashboardarchitecture">A. Dashboard Architecture</h3>
+<ul>
+<li><strong>Before</strong>: Generic list-based view.</li>
+<li><strong>After</strong>: B2B Dashboard style with high-level metrics ("Overall Index") and a grid-based "Core Pillars" display.</li>
+<li><strong>Rationale</strong>: Students need immediate, scannable feedback. The grid layout allows for future expansion of pillars.</li>
+</ul>
+<h3 id="bnavigationsystem">B. Navigation System</h3>
+<ul>
+<li><strong>Feature Layer</strong>: Implemented a "Mobile-First" tab bar for easy access to "Today", "Journal Check-In", and "Support".</li>
+<li><strong>Refinement</strong>: "Wellness Chat" was removed to reduce noise and focus on proactive self-tracking and official resources.</li>
+</ul>
+<h2 id="3featuresetupdates">3. Feature Set Updates</h2>
+<h3 id="progressivewebapppwa">Progressive Web App (PWA)</h3>
+<ul>
+<li><strong>Implementation</strong>: Used <code>vite-plugin-pwa</code> for manifest and service worker.</li>
+<li><strong>Impact</strong>: Enables "Install" on home screen and basic offline availability.</li>
+</ul>
+<h3 id="securejournaling">Secure Journaling</h3>
+<ul>
+<li><strong>Layer</strong>: Integrated client-side AES-256-GCM encryption for journal entries before database insertion.</li>
+<li><strong>Impact</strong>: Ensures student privacy even at the database/administrator layer.</li>
+</ul>
+<h3 id="dynamicresourcerouting">Dynamic Resource Routing</h3>
+<ul>
+<li><strong>Update</strong>: Replaced generic food security links with a targeted <strong>Addictions Services</strong> section.</li>
+<li><strong>Link</strong>: <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx">NSCC Substance Abuse Support (SharePoint)</a></li>
+</ul>

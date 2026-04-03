@@ -139,12 +139,12 @@ export default function Resources() {
                 {/* Addictions Services */}
                 <div className="res-card">
                     <div className="r-header">
-                        <h3>Addictions Services</h3>
+                        <h3>Substance Use and Supports</h3>
                         <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</a>
                     </div>
                     <p>Access resources for substance abuse, addictions recovery, and harm reduction support through NSCC and community partners.</p>
                     <div className="r-links">
-                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Substance Abuse Support</a>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Substance Use Support</a>
                     </div>
                 </div>
 

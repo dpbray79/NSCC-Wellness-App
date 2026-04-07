@@ -1,4 +1,7 @@
-import { NavLink } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useMsal, useIsAuthenticated } from '@azure/msal-react';
+import { supabase } from '../../supabaseClient';
 import wellnessLogo from '../../assets/student_wellness_logo.png';
 import './layout.css';
 
@@ -19,6 +22,42 @@ const SupportIcon = () => (
 );
 
 export default function TopBar() {
+    const { instance, accounts } = useMsal();
+    const isAuthenticated = useIsAuthenticated();
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const navigate = useNavigate();
+
+    let initials = "??";
+    if (accounts.length > 0) {
+        const name = accounts[0].name || "";
+        const parts = name.split(" ");
+        if (parts.length > 1) {
+            initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        } else if (parts[0].length > 0) {
+            initials = parts[0][0].toUpperCase();
+        }
+    }
+
+    const handleLogout = async () => {
+        try {
+            await supabase.auth.signOut();
+            await instance.logoutPopup();
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     return (
         <>
             <div className="topbar">
@@ -27,9 +66,33 @@ export default function TopBar() {
                     <h1>Student Wellness App</h1>
                     <p>Nova Scotia Community College</p>
                 </div>
-                <div className="avatar-ring">
-                    <span style={{ fontSize: '12px', fontWeight: '800', color: 'var(--nscc-blue)' }}>WB</span>
-                </div>
+                {isAuthenticated ? (
+                    <div className="profile-menu-container" ref={dropdownRef}>
+                        <div 
+                            className="avatar-ring" 
+                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <span style={{ fontSize: '12px', fontWeight: '800', color: 'var(--nscc-blue)' }}>{initials}</span>
+                        </div>
+                        {dropdownOpen && (
+                            <div className="profile-dropdown">
+                                <div className="dropdown-user-info">
+                                    <strong>{accounts[0]?.name}</strong>
+                                    <span className="dropdown-email">{accounts[0]?.username}</span>
+                                </div>
+                                <div className="dropdown-divider"></div>
+                                <button className="dropdown-logout-btn" onClick={handleLogout}>
+                                    Sign Out
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="login-link-container">
+                        <NavLink to="/login" className="login-link">Login</NavLink>
+                    </div>
+                )}
             </div>
 
             <div className="nav-tabs">

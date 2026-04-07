@@ -26,9 +26,13 @@ export default function TopBar() {
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
-    // Derive initials from email since Magik Link users don't have a "Name" field yet
+    // Derive initials from the chosen name or email
     let initials = "??";
-    if (user && user.email) {
+    const displayName = user?.user_metadata?.full_name || "Student";
+    
+    if (displayName) {
+        initials = displayName.substring(0, 1).toUpperCase();
+    } else if (user?.email) {
         initials = user.email.substring(0, 1).toUpperCase();
     }
 
@@ -71,7 +75,7 @@ export default function TopBar() {
                         {dropdownOpen && (
                             <div className="profile-dropdown">
                                 <div className="dropdown-user-info">
-                                    <strong style={{ fontSize: '12px', wordBreak: 'break-all' }}>Student</strong>
+                                    <strong style={{ fontSize: '13px', wordBreak: 'break-all' }}>{displayName}</strong>
                                     <span className="dropdown-email" style={{ fontSize: '11px' }}>{user.email}</span>
                                 </div>
                                 <div className="dropdown-divider"></div>

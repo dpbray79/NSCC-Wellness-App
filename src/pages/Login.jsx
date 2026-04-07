@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
     const [consented, setConsented] = useState(false);
@@ -15,12 +16,14 @@ export default function Login() {
         
         setLoading(true);
         try {
-            // Send Magic Link to student email
+            // Send Magic Link to student email with display name in metadata
             const { error } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
-                    // Redirect back to the app after clicking the link
                     emailRedirectTo: window.location.origin,
+                    data: {
+                        full_name: name || 'Student'
+                    }
                 }
             });
 
@@ -57,11 +60,33 @@ export default function Login() {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', minHeight: '60vh', alignItems: 'center' }}>
-            <div className="card" style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
-                <h1 style={{ fontFamily: "'Lora', serif", margin: '0 0 4px', fontSize: '24px' }}>Welcome Back</h1>
-                <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '24px' }}>Sign in with your student email to access your wellness journal.</p>
+            <div className="card" style={{ textAlign: 'center', width: '100%', maxWidth: '440px' }}>
+                <div style={{ textAlign: 'left', marginBottom: '32px' }}>
+                    <h1 style={{ fontFamily: "'Lora', serif", margin: '0 0 12px', fontSize: '32px', color: 'var(--nscc-blue)', fontWeight: 700 }}>Welcome.</h1>
+                    <p style={{ fontSize: '15px', color: 'var(--bark)', lineHeight: '1.6', marginBottom: '20px' }}>
+                        The <strong>NSCC Student Wellness Hub</strong> is your private space to reflect, track your core pillars, and find the support you need to thrive at NSCC.
+                    </p>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '10px', background: 'var(--parchment)', padding: '4px 8px', borderRadius: '4px', fontWeight: 800, color: 'var(--nscc-teal)' }}>PRIVACY-FIRST</span>
+                        <span style={{ fontSize: '10px', background: 'var(--parchment)', padding: '4px 8px', borderRadius: '4px', fontWeight: 800, color: 'var(--nscc-teal)' }}>LOCALLY ENCRYPTED</span>
+                        <span style={{ fontSize: '10px', background: 'var(--parchment)', padding: '4px 8px', borderRadius: '4px', fontWeight: 800, color: 'var(--nscc-teal)' }}>NSCC SUPPORT</span>
+                    </div>
+                </div>
 
                 <form onSubmit={handleMagicLink}>
+                    <div style={{ marginBottom: '16px', textAlign: 'left' }}>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: 'var(--nscc-blue)', textTransform: 'uppercase', marginBottom: '6px' }}>What can we call you?</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            placeholder="e.g. Alex" 
+                            value={name}
+                            onChange={(e) => setName(e.target.value)} 
+                            required 
+                            disabled={loading}
+                        />
+                    </div>
+
                     <div style={{ marginBottom: '16px', textAlign: 'left' }}>
                         <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: 'var(--nscc-blue)', textTransform: 'uppercase', marginBottom: '6px' }}>Student Email Address</label>
                         <input 

@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import WellnessTracker from './pages/WellnessTracker';
 import Resources from './pages/Resources';
 import Login from './pages/Login';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <div className="view-container">
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/checkin" element={<ProtectedRoute><WellnessTracker /></ProtectedRoute>} />
           <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />

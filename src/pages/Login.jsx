@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -109,7 +109,7 @@ export default function Login() {
                             style={{ marginTop: '4px' }}
                         />
                         <label htmlFor="consent" style={{ fontSize: '12px', lineHeight: '1.4', color: 'var(--bark)' }}>
-                            I agree to the <strong>NSCC Wellness Hub Privacy Policy</strong>. 
+                            I agree to the <NavLink to="/privacy" style={{ color: 'var(--nscc-blue)', fontWeight: 800 }}>Student Data & Privacy Policy</NavLink>. 
                             I understand my journal is encrypted locally and only I can read my entries.
                         </label>
                     </div>

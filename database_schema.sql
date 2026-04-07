@@ -14,25 +14,24 @@ create table checkins (
   composite numeric(3,1) not null check (composite >= 0.0 and composite <= 10.0),
   
   -- Optional unencrypted journal (we will upgrade this to AES-256-GCM later in Phase 4)
-  journal text,
-  
-  -- Link to Entra ID authenticated user
-  user_id uuid not null default auth.uid() references auth.users(id)
+  journal text
 );
 
--- Note: user_id is automatically pulled from the MSAL/Supabase session token via auth.uid().
+-- Note: We are not linking these to a user_id yet because we haven't wired up MSAL to Supabase Auth.
+-- For now, the table is open to anonymous insertions so we can test the UI saving data.
+-- DO NOT put this into production until Row Level Security (RLS) is applied!
 
--- Enable Row Level Security (RLS) so we can securely isolate user data
+-- Enable Row Level Security (RLS) so we can control access
 alter table checkins enable row level security;
 
--- Policy: Only authenticated users can insert their own checkins
-create policy "Users can insert their own checkins"
+-- Policy: Allow anonymous users to INSERT checkins (temporarily for Phase 2 testing)
+create policy "Allow anonymous inserts"
   on checkins for insert
-  to authenticated
-  with check (auth.uid() = user_id);
+  to anon
+  with check (true);
 
--- Policy: Only authenticated users can view their own checkins
-create policy "Users can view their own checkins"
+-- Policy: Allow anonymous users to SELECT checkins (temporarily for Phase 2 testing)
+create policy "Allow anonymous selects"
   on checkins for select
-  to authenticated
-  using (auth.uid() = user_id);
+  to anon
+  using (true);

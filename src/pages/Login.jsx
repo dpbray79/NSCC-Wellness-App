@@ -35,7 +35,8 @@ export default function Login() {
 
         } catch (error) {
             console.error("Login Error:", error);
-            alert("Error sending magic link. Please check the email address or try again.");
+            // Show the actual error message so students can tell if they are rate-limited
+            alert(`Login Issue: ${error.message || "Please check the email address or try again."}`);
         } finally {
             setLoading(false);
         }

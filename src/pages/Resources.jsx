@@ -64,10 +64,10 @@ export default function Resources() {
                 <div className="card" style={{ marginTop: '20px', border: '1.5px solid var(--nscc-blue)', background: 'var(--sage-lt)', padding: '20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div>
-                            <h3 style={{ fontSize: '15px', color: 'var(--nscc-blue)', margin: 0 }}>NSCC Student Wellness App</h3>
+                            <h3 style={{ fontSize: '15px', color: 'var(--nscc-blue)', margin: 0 }}>NSCC Student Wellness Hub</h3>
                             <p style={{ fontSize: '12px', color: 'var(--muted)', margin: '2px 0 10px' }}>The official central tool for your student wellness journey.</p>
-                            <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub" target="_blank" rel="noreferrer" className="r-btn primary" style={{ display: 'inline-flex', padding: '8px 16px', fontSize: '12px' }}>
-                                Visit Student Wellness Hub ↗
+                            <a href="https://www.nscc.ca/student-experience/student-supports/index.asp" target="_blank" rel="noreferrer" className="r-btn primary" style={{ display: 'inline-flex', padding: '8px 16px', fontSize: '12px' }}>
+                                Visit Student Supports ↗
                             </a>
                         </div>
                     </div>
@@ -122,7 +122,7 @@ export default function Resources() {
                 <div className="res-card">
                     <div className="r-header">
                         <h3>NSCC Advising & Counselling</h3>
-                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Our-Co.aspx" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Book Appointment &nbsp; →</a>
+                        <a href="https://www.nscc.ca/student-experience/student-supports/wellness-counselling-services/index.asp" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Book Appointment &nbsp; →</a>
                     </div>
                     <p>Book a confidential session with an NSCC counsellor.</p>
                     {campusResources?.counselling && (
@@ -131,7 +131,7 @@ export default function Resources() {
                         </div>
                     )}
                     <div className="r-links">
-                        <a href="https://connect.nscc.ca/student/supports-and-services/health-and-wellness/wellness-and-counselling/counselling/find-a-counsellor.aspx" target="_blank" rel="noreferrer" className="r-btn primary">Book an Appointment</a>
+                        <a href="https://www.nscc.ca/student-experience/student-supports/wellness-counselling-services/index.asp" target="_blank" rel="noreferrer" className="r-btn primary">Book an Appointment</a>
                         <a href="https://www.tranquility.app/novascotia" target="_blank" rel="noreferrer" className="r-btn outline">Learn about Student Services</a>
                     </div>
                 </div>
@@ -140,11 +140,11 @@ export default function Resources() {
                 <div className="res-card">
                     <div className="r-header">
                         <h3>Substance Use and Supports</h3>
-                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</a>
+                        <a href="https://www.nscc.ca/student-experience/student-supports/wellness-counselling-services/index.asp" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Find Support &nbsp; →</a>
                     </div>
                     <p>Access resources for substance abuse, addictions recovery, and harm reduction support through NSCC and community partners.</p>
                     <div className="r-links">
-                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Substance-Abuse.aspx" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Substance Use Support</a>
+                        <a href="https://www.nscc.ca/student-experience/student-supports/wellness-counselling-services/index.asp" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Substance Use Support</a>
                     </div>
                 </div>
 
@@ -161,8 +161,8 @@ export default function Resources() {
                     )}
                     <div className="r-links">
                         <a href="https://www.nscc.ca/student-experience/campus-experience/student-association/index.asp" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Student Association (SA)</a>
-                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/2SLGBTQIA++.aspx?source=https%3A%2F%2Fnscc.sharepoint.com%2Fsites%2FStudent_Wellness_Hub%2FSitePages%2FForms%2FByAuthor.aspx" target="_blank" rel="noreferrer" className="r-btn outline">2SLGBTQIA+ Resources</a>
-                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Indigenous.aspx?source=https%3A%2F%2Fnscc.sharepoint.com%2Fsites%2FStudent_Wellness_Hub%2FSitePages%2FForms%2FByAuthor.aspx" target="_blank" rel="noreferrer" className="r-btn outline">Indigenous Student Supports</a>
+                        <a href="https://www.nscc.ca/student-experience/cultural-supports/2slgbtq-student-supports.asp" target="_blank" rel="noreferrer" className="r-btn outline">2SLGBTQIA+ Resources</a>
+                        <a href="https://www.nscc.ca/student-experience/cultural-supports/indigenous-student-supports.asp" target="_blank" rel="noreferrer" className="r-btn outline">Indigenous Student Supports</a>
                     </div>
                 </div>
 

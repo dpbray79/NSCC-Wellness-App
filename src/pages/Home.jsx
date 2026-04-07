@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { Modal } from 'react-bootstrap';
 import './home.css';
+import { useAuth } from '../context/AuthContext';
 
 const METRIC_DEETS = {
     sleep: { 
@@ -133,6 +134,7 @@ const MonthlyProgressionChart = ({ data }) => {
 
 export default function Home() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [history, setHistory] = useState([]);
     const [avgRange, setAvgRange] = useState('7d'); // '7d' or '30d'
     const [loading, setLoading] = useState(true);
@@ -167,6 +169,8 @@ export default function Home() {
         social: calculateAvg('social')
     };
 
+    const displayName = user?.user_metadata?.full_name || "Student";
+
     const overallIndex = (metrics.sleep + metrics.stress + metrics.cognitive + metrics.social) / 4;
 
     if (loading) return <div className="hub-loader"><div className="hub-spinner"></div><p>Syncing App...</p></div>;
@@ -181,7 +185,7 @@ export default function Home() {
                         <span>Student Wellness App</span>
                     </div>
                     <h1>Student Dashboard</h1>
-                    <p className="welcome-sub">Welcome back, William. Here is your current wellness snapshot.</p>
+                    <p className="welcome-sub">Welcome back, {displayName}. Here is your current wellness snapshot.</p>
                 </div>
                 <div className="header-right">
                     <div className="status-badge">

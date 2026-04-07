@@ -7,9 +7,12 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
+    const [consented, setConsented] = useState(false);
 
     const handleMagicLink = async (e) => {
         e.preventDefault();
+        if (!consented) return alert("Please agree to the privacy terms before signing in.");
+        
         setLoading(true);
         try {
             // Send Magic Link to student email
@@ -71,15 +74,30 @@ export default function Login() {
                             disabled={loading}
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
+
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', textAlign: 'left', marginBottom: '20px' }}>
+                        <input 
+                            type="checkbox" 
+                            id="consent" 
+                            checked={consented} 
+                            onChange={(e) => setConsented(e.target.checked)}
+                            style={{ marginTop: '4px' }}
+                        />
+                        <label htmlFor="consent" style={{ fontSize: '12px', lineHeight: '1.4', color: 'var(--bark)' }}>
+                            I agree to the <strong>NSCC Wellness Hub Privacy Policy</strong>. 
+                            I understand my journal is encrypted locally and only I can read my entries.
+                        </label>
+                    </div>
+
+                    <button type="submit" className="btn btn-primary btn-full" disabled={loading || !consented}>
                         {loading ? 'Sending link...' : 'Send Magic Login Link \u00A0→'}
                     </button>
                 </form>
                 
                 <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--parchment)' }}>
                     <p style={{ fontSize: '11px', color: 'var(--muted)', lineHeight: '1.4' }}>
-                        Magic Link is a passwordless login method. 
-                        No password management is required for your security.
+                        <strong>🔒 Privacy Note:</strong> This app uses AES-256-GCM local-first encryption. 
+                        No unencrypted health data or journal text is ever stored on our servers.
                     </p>
                 </div>
             </div>

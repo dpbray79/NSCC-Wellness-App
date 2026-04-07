@@ -1,6 +1,6 @@
 // Feature/test branch - NSCC Wellness App
 import { Routes, Route } from 'react-router-dom';
-
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 import TopBar from './components/layout/TopBar';
 import CrisisButton from './components/layout/CrisisButton';
@@ -15,11 +15,10 @@ function App() {
       <TopBar />
       <div className="view-container">
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/checkin" element={<WellnessTracker />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/resources" element={<Resources />} />
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/checkin" element={<ProtectedRoute><WellnessTracker /></ProtectedRoute>} />
+          <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />
         </Routes>
       </div>
       <CrisisButton />

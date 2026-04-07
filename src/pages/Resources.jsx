@@ -131,7 +131,7 @@ export default function Resources() {
                         </div>
                     )}
                     <div className="r-links">
-                        <a href="https://connect.nscc.ca/student/campuses/default.aspx" target="_blank" rel="noreferrer" className="r-btn primary">Book an Appointment</a>
+                        <a href="https://connect.nscc.ca/student/supports-and-services/health-and-wellness/wellness-and-counselling/counselling/find-a-counsellor.aspx" target="_blank" rel="noreferrer" className="r-btn primary">Book an Appointment</a>
                         <a href="https://www.tranquility.app/novascotia" target="_blank" rel="noreferrer" className="r-btn outline">Learn about Student Services</a>
                     </div>
                 </div>

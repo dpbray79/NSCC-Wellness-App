@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useMsal, useIsAuthenticated } from '@azure/msal-react';
-import { supabase } from '../../supabaseClient';
+import { useAuth } from '../../context/AuthContext';
 import wellnessLogo from '../../assets/student_wellness_logo.png';
 import './layout.css';
 
@@ -22,27 +21,25 @@ const SupportIcon = () => (
 );
 
 export default function TopBar() {
-    const { instance, accounts } = useMsal();
-    const isAuthenticated = useIsAuthenticated();
+    const { user, signOut } = useAuth();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
+    // Derive initials from the chosen name or email
     let initials = "??";
-    if (accounts.length > 0) {
-        const name = accounts[0].name || "";
-        const parts = name.split(" ");
-        if (parts.length > 1) {
-            initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-        } else if (parts[0].length > 0) {
-            initials = parts[0][0].toUpperCase();
-        }
+    const displayName = user?.user_metadata?.full_name || "Student";
+    
+    if (displayName) {
+        initials = displayName.substring(0, 1).toUpperCase();
+    } else if (user?.email) {
+        initials = user.email.substring(0, 1).toUpperCase();
     }
 
     const handleLogout = async () => {
         try {
-            await supabase.auth.signOut();
-            await instance.logoutPopup();
+            await signOut();
+            navigate("/login");
         } catch (error) {
             console.error("Logout Error:", error);
         }
@@ -66,7 +63,7 @@ export default function TopBar() {
                     <h1>Student Wellness App</h1>
                     <p>Nova Scotia Community College</p>
                 </div>
-                {isAuthenticated ? (
+                {user ? (
                     <div className="profile-menu-container" ref={dropdownRef}>
                         <div 
                             className="avatar-ring" 
@@ -78,8 +75,8 @@ export default function TopBar() {
                         {dropdownOpen && (
                             <div className="profile-dropdown">
                                 <div className="dropdown-user-info">
-                                    <strong>{accounts[0]?.name}</strong>
-                                    <span className="dropdown-email">{accounts[0]?.username}</span>
+                                    <strong style={{ fontSize: '13px', wordBreak: 'break-all' }}>{displayName}</strong>
+                                    <span className="dropdown-email" style={{ fontSize: '11px' }}>{user.email}</span>
                                 </div>
                                 <div className="dropdown-divider"></div>
                                 <button className="dropdown-logout-btn" onClick={handleLogout}>

@@ -16,6 +16,9 @@ export default function Login() {
         
         setLoading(true);
         try {
+            // Store name locally so we can update the profile after the redirect
+            if (name) localStorage.setItem('pending_username', name);
+
             // Send Magic Link to student email with display name in metadata
             const { error } = await supabase.auth.signInWithOtp({
                 email,

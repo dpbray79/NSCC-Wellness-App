@@ -122,7 +122,7 @@ export default function Resources() {
                 <div className="res-card">
                     <div className="r-header">
                         <h3>NSCC Advising & Counselling</h3>
-                        <button className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Book Appointment &nbsp; →</button>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Our-Co.aspx" target="_blank" rel="noreferrer" className="r-btn primary" style={{ padding: '6px 14px', fontSize: '11px' }}>Book Appointment &nbsp; →</a>
                     </div>
                     <p>Book a confidential session with an NSCC counsellor.</p>
                     {campusResources?.counselling && (
@@ -160,9 +160,9 @@ export default function Resources() {
                         </div>
                     )}
                     <div className="r-links">
-                        <button className="r-btn outline">NSCC Student Association (SA)</button>
-                        <button className="r-btn outline">2SLGBTQIA+ Resources</button>
-                        <button className="r-btn outline">Indigenous Student Supports</button>
+                        <a href="https://www.nscc.ca/student-experience/campus-experience/student-association/index.asp" target="_blank" rel="noreferrer" className="r-btn outline">NSCC Student Association (SA)</a>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/2SLGBTQIA++.aspx?source=https%3A%2F%2Fnscc.sharepoint.com%2Fsites%2FStudent_Wellness_Hub%2FSitePages%2FForms%2FByAuthor.aspx" target="_blank" rel="noreferrer" className="r-btn outline">2SLGBTQIA+ Resources</a>
+                        <a href="https://nscc.sharepoint.com/sites/Student_Wellness_Hub/SitePages/Indigenous.aspx?source=https%3A%2F%2Fnscc.sharepoint.com%2Fsites%2FStudent_Wellness_Hub%2FSitePages%2FForms%2FByAuthor.aspx" target="_blank" rel="noreferrer" className="r-btn outline">Indigenous Student Supports</a>
                     </div>
                 </div>
 
